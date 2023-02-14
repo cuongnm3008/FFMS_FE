@@ -1,0 +1,28 @@
+ nz-badge {
+     margin-right: 5px;
+ }
+
+ nz-tab {
+     width: 42px;
+     height: 42px;
+     border-radius: 4px;
+     background: #eee;
+     display: inline-block;
+     vertical-align: middle;
+ }
+
+ nz-badge-sup {
+     position: absolute;
+     left: 70px;
+     width: 25px;
+     height: 20px;
+     top: -49px;
+ }
+
+ nz-badge-sup.ant-scroll-number.ng-tns-c284-4.ng-tns-c285-3.ng-trigger.ng-trigger-zoomBadgeMotion.ant-badge-count.ng-star-inserted {
+     margin: -8px !important;
+ }
+
+ nz-badge-sup.ant-scroll-number.ng-tns-c284-6.ng-tns-c285-5.ng-trigger.ng-trigger-zoomBadgeMotion.ant-badge-count.ng-star-inserted.ant-badge-multiple-words {
+     margin: -8px !important;
+ }

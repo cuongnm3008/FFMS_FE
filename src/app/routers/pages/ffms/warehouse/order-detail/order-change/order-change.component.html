@@ -1,0 +1,153 @@
+<div id="orderChangeForm">
+    <h5 class="mb-5 mt-5 text-gray-800  fw-bolder text-uppercase">1.Thông tin khách</h5>
+    <div class="header-info-mask">
+        <div class="header-info d-flex justify-content-between">
+            <div class="field">
+                <span class="value-label">Tên khách hàng</span>
+                <ng-container *ngIf="bookingDto; else other">
+                    <span class="value">
+                    <span>{{ bookingDto?.customer?.fullName ? bookingDto?.customer?.fullName :"Khách lạ"}}</span><br>
+                    </span>
+                </ng-container>
+                <ng-template #other>
+                    Khách lạ
+                </ng-template>
+            </div>
+            <div class="field">
+                <span class="value-label">Thời gian giao dịch</span>
+                <span class="value">{{dataItem.orderDate | date: 'dd/MM/yyyy'}}</span>
+            </div>
+            <div class="field">
+                <span class="value-label">Hình thức thanh toán</span>
+                <span class="value">{{ dataItem.paymentName ? dataItem.paymentName :"N/A"}}</span>
+            </div>
+            <div class="field">
+                <span class="value-label">Tên nhân viên</span>
+                <span class="value">{{ dataItem.employeeName ? dataItem.employeeName :"N/A"}}</span>
+            </div>
+            <div class="field">
+                <span class="value-label">Giảm giá</span>
+                <span class="value">{{ dataItem.discount ? dataItem.discount :" 0 "}} %</span>
+            </div>
+            <div class="field">
+                <span class="value-label">Tổng tiền</span>
+                <span class="value">{{ dataItem.totalPrice | mask: 'separator.0':',' }} VNĐ</span>
+            </div>
+        </div>
+        <div class="w-100 header-info">
+            <ng-container *ngIf="bookingDto">
+                <div class="field">
+                    <span class="value-label">SĐT khách</span>
+                    <span class="value">
+                        <span>{{bookingDto?.customer?.phone}}</span>
+                    </span>
+                </div>
+                <div class="field">
+                    <span class="value-label">Tên sân bóng</span>
+                    <span class="value">{{ bookingDto.footballName}}</span>
+                </div>
+                <div class="field">
+                    <span class="value-label">Ca đá</span>
+                    <span class="value text-center">{{ bookingDto.slot}}</span>
+                </div>
+                <div class="field">
+                    <span class="value-label">Tiền sân</span>
+                    <span class="value text-center">{{ bookingDto.price  | mask: 'separator.0':',' }} VNĐ</span>
+                </div>
+            </ng-container>
+            <div class="field">
+                <span class="value-label">Ghi chú</span>
+                <span class="value">{{ dataItem.description ? dataItem.description :"N/A"}}</span>
+            </div>
+        </div>
+    </div>
+    <div id="orderChangeTable" class="line-listing-wrapper">
+        <h5 class="mb-5 mt-5 text-gray-800  fw-bolder text-uppercase">2.Thông tin lấy hàng</h5>
+        <ng-container *ngIf="lstItem?.length > 0; else other_content">
+            <nz-table class="table" [nzData]="[1]" [nzShowPagination]="false">
+                <thead>
+                    <tr>
+                        <th style="width: 50px;">STT</th>
+                        <th class="text-center" style="width: 150px;">Sản phẩm</th>
+                        <th class="text-center" style="width: 100px;">Số lượng</th>
+                        <th class="text-center" style="max-width: 150px;">Hàng cần lấy</th>
+                        <th class="text-center" style="min-width: 300px;">Hàng thay đổi</th>
+                        <th class="text-center" style="width: 250px;">Chọn lô thay đổi</th>
+                        <!-- <th class="text-center" style="width: 50px;">Xóa</th> -->
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let item of lstItem; index as index">
+                        <tr>
+                            <td class="text-center">{{index + 1}}</td>
+                            <td>
+                                {{item.productName}} <span class="text-warning">{{item.isAmountChange ? "(Thay đổi)":""}}</span>
+                            </td>
+                            <td class="text-center">{{item.amount}}</td>
+                            <td>
+                                <ng-container *ngFor="let package of item?.lstProductImportHistories; index as index1">
+                                    <div class="m-2">
+                                        {{package?.importCouponCode}}_{{item.productCode}}
+                                        <span class="fw-bold"> SL:{{package.amount}}</span>
+                                    </div>
+                                </ng-container>
+                            </td>
+                            <td class="text-center">
+                                <ng-container *ngIf="item.pwChange;else pw_other">
+                                    <div *ngIf="item?.pwChange?.status != '1';else other_2" class="d-flex justify-content-between align-items-center">
+                                        <div style="width: 50%;">
+                                            <span>
+                                                {{item?.pwChange?.importCouponCode}}_{{item?.pwChange?.productCode}}
+                                            </span>
+                                        </div>
+                                        <div style="width: 50%;" class="d-flex justify-content-around align-content-center">
+                                            <input [(ngModel)]="item.pwChange.amount" (ngModelChange)="item.pwChange.amount= $event" mask="separator.0" thousandSeparator="," style="width: 100px;" class="form-control text-center" placeholder="Số lượng">
+                                            <!-- <div style="display: flex; align-items: center;">
+                                                <i (click)="approve(item.id)" style="color: #519259;" nzTooltipTitle="Xác nhận" nz-tooltip class="far fa-check-square"></i>
+                                            </div> -->
+                                            <div style="display: flex; align-items: center;">
+                                                <i (click)="deletePWC(item?.id)" style="color: #d9534f;" nzTooltipTitle="Xóa" nz-tooltip class="fas fa-times-circle"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ng-template ngIf="item.messageAmount">
+                                        <span style="color: red;">{{item.messageAmount}}</span>
+                                    </ng-template>
+                                    <ng-template #other_2>
+                                        <span class="text-warning">{{item?.pwChange?.importCouponCode}}_{{item?.pwChange?.productCode}}</span>
+                                        <span class="fw-bold"> SL:{{item?.pwChange?.amount}}</span>
+                                    </ng-template>
+                                    <span *ngIf="item.pwChange.amount > item.amount" class="form-control-feedback custom-error-validate" style="display: inline; color: red;">
+                                      Số lượng thay đổi không được lớn hơn số lượng lấy
+                                    </span>
+                                    <span *ngIf="item.pwChange.amount <=0" class="form-control-feedback custom-error-validate" style="display: inline; color: red;">
+                                      Số lượng thay đổi phải lớn hơn 0
+                                    </span>
+                                </ng-container>
+                                <ng-template #pw_other>
+                                    N/A
+                                </ng-template>
+                            </td>
+                            <td>
+                                <ng-container *ngIf="(item?.listProductWarehouse&&item?.pwChange?.status!= '1'&&!isConfirm)||item.messageAmount">
+                                    <app-combobox [datas]="item?.listProductWarehouse" (sModelChange)="addProductWarehouse($event,item.id)"></app-combobox>
+                                </ng-container>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </nz-table>
+        </ng-container>
+        <ng-template #other_content>
+            <div class="mt-5">
+                <h3>Đơn hàng không kèm sản phẩm</h3>
+            </div>
+        </ng-template>
+    </div>
+
+</div>
+<ng-template [nzModalFooter]>
+    <button *ngIf="!isConfirmSuccess" (click)="confirmAll()" class="btn btn-sm btn-primary" style="margin-right: 10px;"><i class="fa fa-save"></i>Lấy hàng</button>
+    <button *ngIf="isConfirmSuccess" (click)="save()" class="btn btn-sm btn-primary" style="margin-right: 10px;"><i class="fas fa-file-invoice-dollar"></i>Thanh toán</button>
+    <button (click)="close()" class="btn btn-sm btn-secondary"><i class="fas fa-times"></i> Đóng</button>
+</ng-template>

@@ -1,0 +1,53 @@
+<div id="modalProductInfor">
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Mã sản phẩm<span class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.productCode" placeholder="Mã sản phẩm" [disabled]="isView" />
+            <validation-custom nameField="Mã sản phẩm" [sModel]="dataItem.productCode"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Tên sản phẩm<span class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.name" placeholder="Tên sản phẩm" [disabled]="isView" />
+            <validation-custom nameField="Tên sản phẩm" [sModel]="dataItem.name"></validation-custom>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Danh mục<span class="text-red"> (*)</span></label>
+            <app-combobox [datas]="listCategory" [(sModel)]="dataItem.categoryId" [isDisabled]="isView"></app-combobox>
+            <validation-custom nameField="Danh mục" [sModel]="dataItem.categoryId"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Thương hiệu<span class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.brand" placeholder="Thương hiệu" [disabled]="isView" />
+            <validation-custom nameField="Thương hiệu" [sModel]="dataItem.brand"></validation-custom>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Hình thức đóng gói<span class="text-red"> (*)</span></label>
+            <ng-container *ngIf="listUnit">
+                <app-combobox [datas]="listUnit" [(sModel)]="dataItem.unit" [isDisabled]="isView"></app-combobox>
+            </ng-container>
+            <validation-custom nameField="Hình thức đóng gói" [sModel]="dataItem.unit"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Giá bán VNĐ<span class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.price" placeholder="Giá bán" [disabled]="isView" mask="separator.0" thousandSeparator="," />
+            <validation-custom nameField="Giá bán" [sModel]="dataItem.price"></validation-custom>
+        </div>
+        <div class="mb-5">
+            <label class="form-label fw-bolder">Mô tả</label>
+            <textarea class="form-control" style="height: auto !important;" [(ngModel)]="dataItem.description" cols="3" placeholder="Mô tả" [disabled]="isView"></textarea>
+        </div>
+        <div>
+            <label>Upload ảnh sản phẩm</label>
+            <upload-image (urlImage)="dataItem.image = $event" [fileList]="fileList"></upload-image>
+        </div>
+    </div>
+    <ng-template [nzModalFooter]>
+        <button *ngIf="!isView" (click)="save()" class="btn btn-sm btn-primary" style="margin-right: 10px;"><i
+        class="fa fa-save"></i>
+      Lưu</button>
+        <button (click)="close()" class="btn btn-sm btn-secondary"><i class="fas fa-times"></i> Đóng</button>
+    </ng-template>

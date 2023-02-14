@@ -1,0 +1,166 @@
+#orderLink {
+    cursor: pointer;
+}
+
+body {
+    background-color: #eeeeee;
+}
+
+.wrapper {
+    padding: 35px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.edit-container,
+.action-bar {
+    background-color: #FFF;
+    padding: 7px 20px;
+    font-size: 12px;
+}
+
+.action-bar {
+    border-bottom: 1px solid #DDD;
+}
+
+.action-bar i {
+    font-size: 14px;
+}
+
+.action-bar ul.action-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.action-bar .primary-actions {
+    float: left;
+}
+
+.action-bar .primary-actions li {
+    float: left;
+    margin-right: 20px;
+}
+
+.secondary-actions {
+    float: right;
+}
+
+.secondary-actions li {
+    float: left;
+    margin-left: 20px;
+}
+
+.secondary-actions li a {
+    display: block;
+}
+
+.bar-wrapper {
+    position: relative;
+}
+
+.action-complete-bar {
+    height: 35px;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.action-complete-bar .done {
+    width: 100%;
+    height: 100%;
+    display: block;
+    text-align: center;
+    background-color: blue;
+    color: #FFF;
+    line-height: 35px;
+    cursor: pointer;
+}
+
+
+/* .action-complete-bar .done :hover {
+    background-color: lighten(blue, 5%)
+} */
+
+.header-info-mask {
+    overflow: hidden;
+}
+
+.header-info {
+    background-color: #F9F9FB;
+    padding: 0px 15px;
+}
+
+.order-details-wrapper {
+    display: none;
+}
+
+.edit-group {
+    display: inline-block;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    position: relative;
+    padding: 6px 10px;
+    border-radius: 6p;
+}
+
+.edit-group .field:first-child {
+    margin-left: 0;
+}
+
+.field {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.field {
+    color: #555;
+}
+
+.field {
+    display: inline-block;
+    margin: 10px 20px 10px 0;
+}
+
+.field span {
+    display: block;
+}
+
+.value-label {
+    font-size: 15px;
+    color: #1e463c;
+    font-weight: 700;
+}
+
+.value {
+    font-size: 14px;
+    color: #9B9B9B;
+}
+
+.edit-container {
+    display: none;
+}
+
+.back-button {
+    cursor: pointer;
+}
+
+.order-listing-wrapper,
+.order-details-wrapper {
+    position: absolute;
+    width: 1100px;
+}
+
+h3.value-label.title {
+    font-size: 22px;
+}
+
+custom-header {
+    color: #1e463c;
+    background-color: #f1f9ee;
+    font-size: 15px;
+    border-bottom: none;
+    vertical-align: middle;
+}

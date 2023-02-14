@@ -1,0 +1,132 @@
+<div class="container emp-profile p-5">
+    <form method="post">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-img">
+                    <nz-avatar style="width: 200px; height: 200px;" *ngIf="!dataItem.image" nzIcon="user" nzSrc="//zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"></nz-avatar>
+                    <nz-avatar style="width: 200px; height: 200px;" nzSize="300" *ngIf="dataItem.image" nzIcon="user" nzSrc="{{dataItem.image}}"></nz-avatar>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="profile-head">
+                    <h2 class="proile-rating fw-bold">
+                        <span class="fs-3">
+                          {{dataItem.firstName}} {{" " + dataItem.lastName}}
+                        </span>
+                    </h2>
+                    <hr>
+                    <h5 class="proile-rating fw-bold">MÃ NHÂN VIÊN : <span>
+                       {{dataItem.username}}
+                    </span></h5>
+                    <h5 class="proile-rating fw-bold">
+                        CHỨC VỤ:
+                        <span *ngIf="dataItem.role.length != 0">
+                          {{dataItem.role[0]['roleName']}}
+                      </span>
+                    </h5>
+                    <h5 class="proile-rating fw-bold">CƠ SỞ LÀM VIỆC :
+                        <span>
+                             <span>{{dataItem.foundationName.length > 0 ? dataItem.foundationName : ""}}</span>
+                        </span>
+                    </h5>
+                    <h5 class="proile-rating fw-bold">GIỚI TÍNH :
+                        <span>
+                        {{ (dataItem.gender === "M") ? "Nam" : "Nữ" }}
+                      </span>
+                    </h5>
+                </div>
+            </div>
+            <div class="col-md-2 fs-3 pr-5">
+                <!-- <span *ngIf="dataItem.status == '0'; else other_content " class="badge badge-success fs-4">Đang làm việc</span>
+                <ng-template #other_content>
+                    <span class="badge badge-danger">Đã nghỉ việc</span>
+                </ng-template> -->
+                <span *ngIf="dataItem.enable === '1'; else other_content " class="badge badge-success" style="background-color: #38b332; margin-left: -20px !important;">Đang làm việc</span>
+                <ng-template #other_content>
+                    <span class="badge badge-danger">Đã nghỉ việc</span>
+                </ng-template>
+                <!-- <span class="badge " style="color: #fff; background-color: #38B332;">Đang làm việc</span> -->
+                <!-- <input type="submit" class="profile-edit-btn" name="btnAddMore" value="Edit Profile" /> -->
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-5 proile-rating fw-bold">
+                        <label>TÀI KHOẢN:</label>
+                    </div>
+                    <div class="col-md-7 proile-rating ">
+                        <span>{{dataItem.username}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 proile-rating fw-bold">
+                        <label>SỐ ĐIỆN THOẠI: </label>
+                    </div>
+                    <div class="col-md-7 proile-rating">
+                        <span>{{dataItem.phones.length > 0 ? dataItem.phones[0].phone : ""}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 proile-rating fw-bold">
+                        <label>MGÀY BẮT ĐẦU LÀM VIỆC</label>
+                    </div>
+                    <div class="col-md-7 proile-rating">
+                        <span>{{dataItem.createdDate | date: 'dd/MM/yyyy'}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 proile-rating fw-bold">
+                        <label>ĐỊA CHỈ THƯỜNG TRÚ: </label>
+                    </div>
+                    <div class="col-md-7 proile-rating">
+                        <span>{{dataItem.addresses[0].addressDetail}}, {{percentName?.name}}, {{districtName?.name}}, {{provineName?.name}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-5 proile-rating fw-bold">
+                        <label>EMAIL: </label>
+                    </div>
+                    <div class="col-md-7 proile-rating">
+                        <span>{{dataItem.email ? dataItem.email : 'N/A'}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 proile-rating fw-bold">
+                        <label>NGÀY SINH NHẬT: </label>
+                    </div>
+                    <div class="col-md-7 proile-rating">
+                        <span>{{dataItem.birthDate  | date: 'dd/MM/yyyy'}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 proile-rating fw-bold">
+                        <label>SỐ ĐIỆN THOẠI 2: </label>
+                    </div>
+                    <div class="col-md-7 proile-rating">
+                        <span>{{dataItem.phones.length > 1 ? dataItem.phones[1].phone : "N/A"}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5 proile-rating fw-bold">
+                        <label>ĐỊA CHỈ TẠM TRÚ: </label>
+                    </div>
+                    <div class="col-md-7 proile-rating">
+                        <span *ngIf="dataItem.addresses[1] != null ">
+                    {{dataItem.addresses[1].addressDetail ? dataItem.addresses[1].addressDetail : "N/A"}}, {{percentName?.name}}, {{districtName?.name}}, {{provineName?.name}}
+                  </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- </div> -->
+        <!-- </div> -->
+    </form>
+</div>
+<ng-template [nzModalFooter]>
+    <button (click)="close()" class="btn btn-sm btn-secondary"><i class="fas fa-times"></i> Đóng</button>
+</ng-template>

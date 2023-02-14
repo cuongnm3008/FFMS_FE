@@ -1,0 +1,138 @@
+<div id="modalEmpoloyeeInfor">
+    <h5 class="mb-4 text-gray-800 text-hover-primary fw-bolder text-uppercase">1. Thông tin tài khoản</h5>
+    <div class="row">
+        <div class="col-md-4 mb-5">
+            <label class="form-label fw-bolder">Tên đăng nhập<span class="text-red"> (*)</span></label>
+            <input class="form-control" nz-input [(ngModel)]="_dataItem.username" [disabled]="isEdit" [value]="_dataItem.username" placeholder="Tên đăng nhập" (keyup)="validate('1')" [disabled]="isView" />
+            <span *ngIf="_dataItem?.username?.length > 0" style="color: red;">
+              {{(validaorRes.status == "0") ? validaorRes.message +' tên gợi ý :'+ validaorRes.suggestUsername :
+              validaorRes.suggestUsername}}
+            </span>
+            <validation-custom [nameField]="'Tên đăng nhập'" [sModel]="_dataItem.username"></validation-custom>
+        </div>
+        <div class="col-md-4 mb-5">
+            <label class="form-label fw-bolder">Tình trạng làm việc<span class="text-red"> (*)</span></label>
+            <app-combobox [datas]="lstStatus" [(sModel)]="_dataItem.enable"></app-combobox>
+            <!-- <custom-combobox [datas]="dataStatus" [selectdId]="dataItem.status" (sModelChange)="this.dataItem.status = $event" [isDisabled]="isView"></custom-combobox> -->
+        </div>
+        <div class="col-md-4 mb-5">
+            <label class="form-label fw-bolder">Mật khẩu <span class="text-red"> (*)</span></label>
+            <password-input [placeholder]="'Mật khẩu'" (dataOutput)="_dataItem.password = $event"></password-input>
+            <!-- <input class="form-control" type="password" nz-input [(ngModel)]="_dataItem.password" placeholder="Mật khẩu" /> -->
+            <validation-custom [nameField]="'Mật khẩu'" [sModel]="_dataItem.password"></validation-custom>
+        </div>
+        <div class="col-md-4 mb-5">
+            <label class="form-label fw-bolder">Nhập lại mật khẩu<span class="text-red"> (*)</span></label>
+            <password-input [placeholder]="'Mật khẩu'" (dataOutput)="rePassword = $event"></password-input>
+            <!-- <input class="form-control" type="password" nz-input [(ngModel)]="rePassword" placeholder="Nhập lại mật khẩu" /> -->
+            <validation-custom [nameField]="'Nhập lại mật khẩu'" [sModel]="rePassword"></validation-custom>
+        </div>
+    </div>
+    <h5 class="mb-4 text-gray-800 text-hover-primary fw-bolder text-uppercase">2. Thông tin cá nhân</h5>
+    <div class="row">
+        <div class="col-md-4 mb-5">
+            <label class="form-label fw-bolder">Họ<span class="text-red"> (*)</span></label>
+            <input class="form-control" nz-input [(ngModel)]="_dataItem.firstName" placeholder="Họ" [value]="_dataItem.firstName" [disabled]="isView" />
+            <validation-custom [nameField]="'Họ'" [sModel]="_dataItem.firstName"></validation-custom>
+        </div>
+        <div class="col-md-4 mb-5">
+            <label class="form-label fw-bolder">Tên<span class="text-red"> (*)</span></label>
+            <input class="form-control" nz-input [(ngModel)]="_dataItem.lastName" placeholder="Tên" [value]="_dataItem.lastName" [disabled]="isView" />
+            <validation-custom [nameField]="'Tên'" [sModel]="_dataItem.lastName"></validation-custom>
+        </div>
+        <div class="col-md-4 mb-5">
+            <label class="form-label fw-bolder">Giới Tính<span class="text-red"> (*)</span></label>
+            <custom-combobox [datas]="lstGender" [selectdId]="_dataItem.gender" (sModelChange)="_dataItem.gender= $event" [isDisabled]="isView">
+            </custom-combobox>
+            <validation-custom [nameField]="'Giới Tính'" [sModel]="_dataItem.gender"></validation-custom>
+        </div>
+        <div class="col-md-4 mb-5">
+            <label class="form-label fw-bolder">Ngày Sinh<span class="text-red"> (*)</span></label>
+            <date-picker [(sModel)]="_dataItem.birthDate" (onDateChange)="_dataItem.birthDate = $event" [isDisabled]="isView" placeholder=" dd-mm-yyyy"></date-picker>
+            <validation-custom [nameField]="'Ngày sinh'" [sModel]="_dataItem.birthDate"></validation-custom>
+        </div>
+        <div class="col-md-4 mb-5">
+            <label class="form-label fw-bolder">Số điện thoại 1<span class="text-red"> (*)</span></label>
+            <input class="form-control" nz-input [(ngModel)]="_dataItem.phones[0].phone" [value]="_dataItem.phones.length == 1 ? _dataItem.phones[0].phone : ''" placeholder="Số điện thoại" [disabled]="isView" mask="0000 000 000" sMinlength="9" sMaxlength="11" />
+            <validation-custom [nameField]="'Số điện thoại 1'" [sModel]="_dataItem.phones[0].phone"></validation-custom>
+        </div>
+        <div class="col-md-4 mb-5">
+            <label class="form-label fw-bolder">Số điện thoại 2<span class="text-red"> </span></label>
+            <input class="form-control" nz-input [(ngModel)]="_dataItem.phones[1].phone" [value]="_dataItem.phones.length == 1 ? _dataItem.phones[1].phone : ''" placeholder="Số điện thoại" [disabled]="isView" mask="0000 000 000" sMinlength="9" sMaxlength="11" />
+        </div>
+        <div class="col-md-4 mb-5">
+            <label class="form-label fw-bolder">Email<span class="text-red"> </span></label>
+            <input class="form-control" nz-input [(ngModel)]="_dataItem.email" placeholder="Email" [disabled]="isView" />
+        </div>
+        <div class="col-md-4 mb-5">
+            <label class="form-label fw-bolder">Vai trò</label>
+            <custom-combobox [datas]="lstRoles" [selectdId]="this.rolePicked" (sModelChange)="rolePicked = $event" [isDisabled]="isView">
+            </custom-combobox>
+        </div>
+        <div class="col-md-4 mb-5">
+            <label class="form-label fw-bolder">Cơ sở</label>
+            <custom-combobox [datas]="this.lstCoSo" [selectdId]="_dataItem.foundationCode" (sModelChange)="_dataItem.foundationCode = $event" [isDisabled]="true"></custom-combobox>
+        </div>
+    </div>
+    <h5 class="mb-4 text-gray-800 text-hover-primary fw-bolder text-uppercase">3. Địa chỉ thường trú</h5>
+    <div class="row">
+        <div class="col-md-4 mb-5">
+            <label class="form-label fw-bolder">Tỉnh/Thành phố<span class="text-red"> (*)</span></label>
+            <tinh-combobox [(sModel)]="_dataItem.addresses[0].province"></tinh-combobox>
+            <validation-custom [nameField]="'Tỉnh'" [sModel]="_dataItem.addresses[0].province"></validation-custom>
+        </div>
+        <div class="col-md-4 mb-5">
+            <label class="form-label fw-bolder">Quận/Huyện<span class="text-red"> (*)</span></label>
+            <huyen-combobox [tinhId]="_dataItem.addresses[0].province" [(sModel)]="_dataItem.addresses[0].district"></huyen-combobox>
+            <ng-container *ngIf="_dataItem.addresses[0].province">
+                <validation-custom [nameField]="'Huyện'" [sModel]="_dataItem.addresses[0].district"></validation-custom>
+            </ng-container>
+        </div>
+        <div class="col-md-4 mb-5">
+            <label class="form-label fw-bolder">Phường/Xã<span class="text-red"> (*)</span></label>
+            <xa-combobox [huyenId]="_dataItem.addresses[0].district" [(sModel)]="_dataItem.addresses[0].percinct"></xa-combobox>
+            <ng-container *ngIf="_dataItem.addresses[0].percinct">
+                <validation-custom [nameField]="'Xã'" [sModel]="_dataItem.addresses[0].percinct"></validation-custom>
+            </ng-container>
+        </div>
+        <div class="col-md-12 mb-5">
+            <label class="form-label fw-bolder">Địa chỉ chi tiết<span class="text-red"> (*)</span></label>
+            <input class="form-control" nz-input [(ngModel)]="_dataItem.addresses[0].addressDetail" [value]="_dataItem.addresses[0].addressDetail" placeholder="Địa chỉ chi tiết" [disabled]="isView" />
+            <validation-custom [nameField]="'Địa chỉ'" [sModel]="_dataItem.addresses[0].addressDetail"></validation-custom>
+        </div>
+    </div>
+
+    <h5 class="mb-4 text-gray-800 text-hover-primary fw-bolder text-uppercase">4. Địa chỉ tạm trú</h5>
+    <div class="row">
+        <div class="col-md-4 mb-5">
+            <label class="form-label fw-bolder">Tỉnh/Thành phố</label>
+            <tinh-combobox [(sModel)]="_dataItem.addresses[1].province"></tinh-combobox>
+        </div>
+        <div class="col-md-4 mb-5">
+            <label class="form-label fw-bolder">Quận/Huyện</label>
+            <huyen-combobox [tinhId]="_dataItem.addresses[1].province" [(sModel)]="_dataItem.addresses[1].district"></huyen-combobox>
+        </div>
+        <div class="col-md-4 mb-5">
+            <label class="form-label fw-bolder">Phường/Xã</label>
+            <xa-combobox [huyenId]="_dataItem.addresses[1].district" [(sModel)]="_dataItem.addresses[1].percinct"></xa-combobox>
+        </div>
+        <div class="col-md-12 mb-5">
+            <label class="form-label fw-bolder">Địa chỉ chi tiết</label>
+            <input class="form-control" nz-input [(ngModel)]="_dataItem.addresses[1].addressDetail" [value]="_dataItem.addresses[1].addressDetail" placeholder="Địa chỉ chi tiết" [disabled]="isView" />
+        </div>
+        <h5 class="mb-4 text-gray-800 text-hover-primary fw-bolder text-uppercase">5. Ảnh đại diện</h5>
+        <div class="col-md-4 mb-5">
+            <label class="form-label fw-bolder">Tải ảnh đại diện nhân viên </label>
+            <upload-image (urlImage)="_dataItem.image = $event" [fileList]="fileList"></upload-image>
+        </div>
+    </div>
+</div>
+<ng-template [nzModalFooter]>
+    <button *ngIf="!isView&&!isEdit" (click)="save()" class="btn btn-sm btn-primary" style="margin-right: 10px;"><i
+      class="fa fa-save"></i>
+    Lưu</button>
+    <button *ngIf="!isView&&isEdit" (click)="update()" class="btn btn-sm btn-primary" style="margin-right: 10px;"><i
+      class="fa fa-save"></i>
+    Cập nhật</button>
+    <button (click)="close()" class="btn btn-sm btn-secondary"><i class="fas fa-times"></i> Đóng</button>
+</ng-template>

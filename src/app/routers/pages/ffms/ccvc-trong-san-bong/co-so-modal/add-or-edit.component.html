@@ -1,0 +1,62 @@
+<div id="modalCoSoSanBong">
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Tên cơ sở<span class="text-red"> (*)</span></label>
+            <input class="form-control" nz-input [(ngModel)]="_dataItem.name" placeholder="Tên cơ sở" />
+            <validation-custom [nameField]="'Tên cơ sở'" [sModel]="_dataItem.name"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Mã cơ sở<span class="text-red"> (*)</span></label>
+            <input class="form-control" nz-input [(ngModel)]="_dataItem.foundationCode" placeholder="Tên cơ sở" />
+            <validation-custom [nameField]="'Mã cơ sở'" [sModel]="_dataItem.foundationCode"></validation-custom>
+        </div>
+    </div>
+    <!-- <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Tỉnh/Thành phố<span class="text-red"> (*)</span></label>
+            <tinh-combobox [(sModel)]="_dataItem.address.province"></tinh-combobox>
+            <validation-custom [nameField]="'Tỉnh'" [sModel]="_dataItem.address.province"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Quận/Huyện<span class="text-red"> (*)</span></label>
+            <huyen-combobox [tinhId]="_dataItem.address.province" [(sModel)]="_dataItem.address.district"></huyen-combobox>
+            <validation-custom [nameField]="'Huyện'" [sModel]="_dataItem.address.district"></validation-custom>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Phường/Xã<span class="text-red"> (*)</span></label>
+            <xa-combobox [huyenId]="_dataItem.address.district" [(sModel)]="_dataItem.address.percinct"></xa-combobox>
+            <validation-custom [nameField]="'Xã'" [sModel]="_dataItem.address.percinct"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Địa chỉ chi tiết<span class="text-red"> (*)</span></label>
+            <input class="form-control" nz-input [(ngModel)]="_dataItem.addressDetail" [value]="_dataItem.address.addressDetail" placeholder="Địa chỉ chi tiết" />
+            <validation-custom [nameField]="'Địa chỉ'" [sModel]="_dataItem.addressDetail"></validation-custom>
+        </div>
+    </div> -->
+    <div class="mb-5 ">
+        <label class="form-label fw-bolder">Địa chỉ<span class="text-red"> (*)</span></label>
+        <input class="form-control" nz-input [(ngModel)]="_dataItem.description" placeholder="Tên cơ sở" />
+        <validation-custom [nameField]="'Mã cơ sở'" [sModel]="_dataItem.description"></validation-custom>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder ">Trạng thái kinh doanh<span class="text-red "> (*)</span></label>
+            <app-combobox [(sModel)]="_dataItem.status" [datas]="listTrangThaiCoSo">
+            </app-combobox>
+            <validation-custom [nameField]="'Trạng thái kinh doanh'" [sModel]="_dataItem.status "></validation-custom>
+        </div>
+    </div>
+
+    <!-- <div class="row">
+        <label class="form-label fw-bolder">Tải ảnh cở sở kinh doanh </label>
+        <upload-image (urlImage)="dataItem.image = $event" [fileList]="fileList"></upload-image>
+    </div> -->
+
+
+</div>
+<ng-template [nzModalFooter]>
+    <button (click)="save() " class="btn btn-sm btn-primary " style="margin-right: 10px; "><i class="fa fa-save "></i>Cập nhất</button>
+    <button (click)="close() " class="btn btn-sm btn-secondary "><i class="fas fa-times "></i> Đóng</button>
+</ng-template>

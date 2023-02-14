@@ -1,0 +1,119 @@
+<div ngProjectAs="card-body">
+    <div class="d-flex flex-wrap flex-sm-nowrap mt-5">
+        <div class="me-7 mb-4">
+            <div class="d-flex flex-center flex-shrink-0 bg-light rounded w-100px h-100px w-lg-150px h-lg-150px me-7">
+                <img class="mw-50px mw-lg-75px w-100 h-100" style="object-fit: cover; border-radius: 8px !important;" [src]="producDto.image" alt="product-image">
+            </div>
+        </div>
+        <div class="flex-grow-1 ms-5 ">
+            <div class="row text-14">
+                <div class="col-md-3">
+                    <span><span class="me-2 fw-bold"> Tên sản phẩm:</span>{{producDto.name}}</span>
+                    <hr>
+                    <span><span class="me-2 fw-bold"> Mã sản phẩm :</span>{{producDto.productCode}}</span>
+                    <hr>
+                    <ng-container [ngSwitch]="producDto.categoryId">
+                        <span *ngSwitchCase="1"><span  class="me-2 fw-bold"> Loại sản phẩm :</span>Đồ ăn</span>
+                        <span *ngSwitchCase="2"><span   class="me-2 fw-bold"> Loại sản phẩm :</span>Đồ tập</span>
+                    </ng-container>
+                </div>
+                <div class="col-md-3">
+                    <span><span  class="me-2 fw-bold"> Thương hiệu :</span>{{producDto.brand}}</span>
+                    <hr>
+                    <span><span  class="me-2 fw-bold"> Hình thức đóng gói :</span>{{producDto.unitName}}</span>
+                    <hr>
+                    <span><span  class="me-2 fw-bold"> Mô tả sản phẩm :</span>{{producDto.description ? producDto.description : 'N/A'}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nz-tabset nzType="card" [(nzSelectedIndex)]="currentTab" (nzSelectChange)="tabChangeHandle()">
+        <nz-tab nzTitle="Thông tin lô hàng">
+            <div class="row" enterKey (enterKeyEvent)="fetchData()">
+                <div class="mb-4 col-md-3">
+                    <label for="search" class="form-label fw-bolder">Cơ sở</label>
+                    <foundation-get-id-combobox [(sModel)]="objPackageFilter.foundationId" [isDisabled]="true"></foundation-get-id-combobox>
+                </div>
+                <div class="mb-4 col-md-3">
+                    <label for="search" class="form-label fw-bolder">Mã nhập hàng</label>
+                    <input [(ngModel)]="objPackageFilter.importCouponCode" type="text" class="form-control" placeholder="Nhập mã nhập hàng">
+                </div>
+                <div class="mb-4 col-md-3">
+                    <label for="search" class="form-label fw-bolder">Nhà cung cấp</label>
+                    <input [(ngModel)]="objPackageFilter.supplierName" type="text" class="form-control" placeholder="Nhập nhà cung cấp">
+                </div>
+                <div class="col-md-3 mb-4">
+                    <label for="search" class="form-label fw-bolder">Ngày nhập hàng</label>
+                    <date-picker [(sModel)]="objPackageFilter.startDate" (onDateChange)="objPackageFilter.startDate = $event" placeholder=" dd-mm-yyyy"></date-picker>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <label for="search" class="form-label fw-bolder">Tình trạng đổi trả</label>
+                    <app-combobox [datas]="trangDoiTra" [(sModel)]="objPackageFilter.returnStatus"></app-combobox>
+                </div>
+                <div class="col-md-3 mb-4">
+                    <label for="search" class="form-label fw-bolder">Trạng thái chất lượng</label>
+                    <app-combobox [datas]="trangTTDoAn" [(sModel)]="objPackageFilter.status"></app-combobox>
+                </div>
+                <div class="col-md-3 mb-4 mt-9">
+                    <button (click)="fetchData()" class="btn btn-sm btn-primary me-1">
+                        <i class="fas fa-search"></i> Tìm kiếm
+                      </button>
+                    <button (click)="initFilter()" class="btn btn-sm btn-secondary ms-1">
+                        <i class="fas fa-sync"></i> Đặt lại
+                      </button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <ng-container *ngIf="producDto.categoryId == PRODUCT_CATEGORY.DO_AN; else other_content">
+                    <do-an-warehouse-table [isProductDetail]="true" [total]="objPackageFilter.total" [loading]="loading" (viewDetail)="addOrEditModal($event,null,true)" (exchangeProduct)="exchangeProduct($event)" (addOrEdit)="addOrEditModal($event)" (onChange)="onChangeQueryPackage($event)"
+                        [listData]="listProductWarehouse"></do-an-warehouse-table>
+                </ng-container>
+                <ng-template #other_content>
+                    <do-tap-warehouse-table [isProductDetail]="true" [total]="objPackageFilter.total" [loading]="loading" (viewDetail)="addOrEditModal($event,null,true)" (addOrEdit)="addOrEditModal($event)" (onChange)="onChangeQueryPackage($event)" [listData]="listProductWarehouse"></do-tap-warehouse-table>
+                </ng-template>
+            </div>
+        </nz-tab>
+        <nz-tab nzTitle="Lịch sử nhập xuất">
+            <div>
+                <div class="row" enterKey (enterKeyEvent)="fetchDataProductHistory()">
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Mã nhập hàng</label>
+                        <input type="text" class="form-control" placeholder="Nhập mã nhập hàng" [(ngModel)]="objHistoryProductFilter.importCouponCode">
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <label for="search" class="form-label fw-bolder">Ngày giao dịch</label>
+                        <date-picker [(sModel)]="objHistoryProductFilter.importDate" (onDateChange)="objHistoryProductFilter.importDate = $event" placeholder=" dd-mm-yyyy"></date-picker>
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Nhà cung cấp</label>
+                        <input [(ngModel)]="objHistoryProductFilter.supplier" type="text" class="form-control" placeholder="Nhập nhà cung cấp">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Người nhập</label>
+                        <app-combobox [datas]="this.listEmployees" [(sModel)]="objHistoryProductFilter.importBy"></app-combobox>
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Tình trạng</label>
+                        <app-combobox [datas]="this.listStatus" [(sModel)]="objHistoryProductFilter.status"></app-combobox>
+                    </div>
+                    <div class="mb-4 col-md-3 mt-9">
+                        <button (click)="fetchDataProductHistory()" class="btn btn-sm btn-primary me-1">
+                            <i class="fas fa-search"></i> Tìm kiếm
+                          </button>
+                        <button (click)="initFilter()" class="btn btn-sm btn-secondary ms-1">
+                            <i class="fas fa-sync"></i> Đặt lại
+                          </button>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <import-export-history-table [loading]="loadingHistory" [listData]="listDataTransaction" [total]="objHistoryProductFilter.total" (onChange)="onChangeQueryHistory($event)"></import-export-history-table>
+            </div>
+        </nz-tab>
+    </nz-tabset>
+    <ng-template [nzModalFooter]>
+        <button (click)="save()" class="btn btn-sm btn-primary" style="margin-right: 10px;"><i class="fa fa-save"></i>
+          Lưu thông tin</button>
+        <button class="btn btn-sm btn-secondary"><i class="fas fa-times"></i> Trở lại</button>
+    </ng-template>
+</div>

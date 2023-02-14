@@ -1,0 +1,102 @@
+.wapper {
+    background-color: #FFFFFF;
+    padding: 15px;
+    margin: 0px 15px;
+}
+
+.filter {
+    width: 400px;
+    margin: 0px auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.filter .calendar {
+    width: 70%;
+}
+
+nz-table>thead>tr>th {
+    color: #1e463c;
+    font-size: 15px;
+    border-bottom: none;
+    vertical-align: middle;
+}
+
+nz-table>tbody>tr>td:hover {
+    background-color: #E5EBE9;
+    cursor: pointer;
+}
+
+nz-table>tbody>tr>td.paid {
+    background-color: #4CACBC;
+}
+
+nz-table>tbody>tr>td.deposit {
+    background-color: #BEDBBB;
+}
+
+nz-table td {
+    /* background-color: #f8f5f0; */
+}
+
+.paid {
+    background-color: #4CACBC;
+    border-radius: 8px;
+    margin: 0px 2px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.deposit {
+    background-color: #BEDBBB;
+    border-radius: 8px;
+    margin: 0px 2px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.empty {
+    background-color: #f1bdbd;
+    border-radius: 8px;
+    margin: 0px 2px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nz-table tr td.slot_empty {
+    vertical-align: middle;
+    cursor: default !important;
+}
+
+nz-table tr td.slot_empty button {
+    display: none;
+    cursor: pointer !important;
+}
+
+nz-table tr td.slot_empty:hover button {
+    display: inline-block;
+}
+
+nz-table>tbody>tr>td.deposit:hover {
+    cursor: pointer;
+    background-color: #dff7dd;
+}
+
+nz-table>tbody>tr>td.paid:hover {
+    cursor: pointer;
+    background-color: #5bcce0;
+}
+
+.form-label.fw-bolder {
+    font-size: 14px;
+}

@@ -1,0 +1,57 @@
+<div ngProjectAs="card-body">
+    <div enterKey (enterKeyEvent)="fetchData()">
+        <nz-tabset nzType="card">
+            <nz-tab nzTitle="Tìm kiếm nâng cao">
+                <div class="row">
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Tên sản phẩm</label>
+                        <input [(ngModel)]="objFilter.name" type="text" class="form-control" placeholder="Nhập tên sản phẩm">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Mã sản phẩm</label>
+                        <input [(ngModel)]="objFilter.productCode" type="text" class="form-control" placeholder="Nhập mã sản phẩm">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Tên thương hiệu</label>
+                        <input [(ngModel)]="objFilter.brand" type="text" class="form-control" placeholder="Nhập tên thương hiệu">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Trạng thái</label>
+                        <app-combobox [datas]="listProductStatus" [(sModel)]="objFilter.status"></app-combobox>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button (click)="fetchData()" class="btn btn-sm btn-primary me-1">
+                        <i class="fas fa-search"></i> Tìm kiếm
+                        </button>
+                    <button (click)="initFilter()" class="btn btn-sm btn-secondary ms-1">
+                            <i class="fas fa-sync"></i> Đặt lại
+                        </button>
+                </div>
+            </nz-tab>
+            <nz-tab nzTitle="Tìm kiếm nhanh">
+                <div class="mb-4">
+                    <input id="search" [(ngModel)]="objFilter.textSearch" (ngModelChange)="searchHandle()" placeholder="Nhập tên, mã sản phẩm để tìm kiếm..." autoFocus class="form-control" type="text" />
+                </div>
+            </nz-tab>
+        </nz-tabset>
+    </div>
+    <nz-tabset nzType="card" [(nzSelectedIndex)]="currentTab" (nzSelectChange)="tabChangeHandle()">
+        <nz-tab nzTitle="Đồ ăn">
+            <ng-container *ngIf="productCategory == PRODUCT_CATEGORY.DO_AN">
+                <div class="table-responsive">
+                    <product-table [total]="objFilter.total" [loading]="loading" (delete)="deleteProduct($event)" (view)="addOrEditModal($event,true)" (addOrEdit)="addOrEditModal($event,false)" (onChange)="onChangeQuery($event)" [listData]="listProduct">
+                    </product-table>
+                </div>
+            </ng-container>
+        </nz-tab>
+        <nz-tab nzTitle="Đồ tập">
+            <ng-container *ngIf="productCategory == PRODUCT_CATEGORY.DO_TAP">
+                <div class="table-responsive">
+                    <product-table [total]="objFilter.total" [loading]="loading" (delete)="deleteProduct($event)" (view)="addOrEditModal($event,true)" (addOrEdit)="addOrEditModal($event,false)" (onChange)="onChangeQuery($event)" [listData]="listProduct">
+                    </product-table>
+                </div>
+            </ng-container>
+        </nz-tab>
+    </nz-tabset>
+</div>

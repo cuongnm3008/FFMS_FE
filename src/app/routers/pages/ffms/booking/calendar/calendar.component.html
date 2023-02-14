@@ -1,0 +1,171 @@
+<div id="schedule">
+    <div>
+        <div class="row">
+            <div class="col-xl-3">
+                <label class="form-label fw-bolder ">Chọn tuần</label>
+                <nz-date-picker nzFormat="Tuần ww - yyyy" [(ngModel)]="week" (ngModelChange)="weekChangeHandle($event)" nzMode="week" nzPlaceHolder="Chọn tuần đặt lịch"></nz-date-picker>
+            </div>
+            <div class="col-xl-3">
+                <label for="search" class="form-label fw-bolder">Chọn khoảng thời gian</label>
+                <nz-range-picker [nzFormat]="'dd/MM/yyyy'" [(ngModel)]="dateFromToArr" (ngModelChange)="rankPickerChange($event)"></nz-range-picker>
+                <validation-custom nameField="Khoảng thời gian" [sModel]="dateFromToArr"></validation-custom>
+            </div>
+            <div class="col-xl-3">
+                <label for="search" class="form-label fw-bolder">Chọn trạng thái ca đá</label>
+                <select-multiple [totalCount]="3" [(sModel)]="bookingCategorySelected" [listData]="bookingCategory"></select-multiple>
+            </div>
+            <div class="col-xl-3">
+                <label for="search" class="form-label fw-bolder">Chọn kiểu sân</label>
+                <select-multiple [totalCount]="3" [(sModel)]="footballCategorySelected" (sModelChange)="kieuSanChange($event)" [listData]="listFoodballCategory"></select-multiple>
+            </div>
+            <div class="col-xl-6 mt-4">
+                <label for="search" class="form-label fw-bolder">Chọn ca đá</label>
+                <select-multiple [totalCount]="4" [(sModel)]="listSlotSelected" [listData]="listSlotSlectBox"></select-multiple>
+            </div>
+            <div class="col-xl-6 mt-4">
+                <label for="search" class="form-label fw-bolder">Chọn sân bóng</label>
+                <ng-container *ngIf="listFootballField">
+                    <select-multiple [totalCount]="5" [(sModel)]="listFootballSelected" [isDisabled]="isDisable" [listData]="footballSelects"></select-multiple>
+                </ng-container>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <button (click)="seach()" href="javascript:;" class="btn btn-sm btn-primary">
+      <span style="font-size: 12px; text-transform: uppercase;">
+          <i class="fas fa-search"></i> Tìm kiếm
+      </span>
+    </button>
+            <button (click)="initParam()" class="btn btn-sm btn-secondary ms-2">
+     <i class="fas fa-sync"></i> Đặt lại
+    </button>
+        </div>
+    </div>
+    <div class="d-flex flex-row mt-4 justify-content-center">
+        <div class="d-flex flex-row">
+            <span class="fw-bolder">Đã thanh toán</span>
+            <div style="width: 40px; height: 20px;" class="paid ms-2"></div>
+        </div>
+        <div class="d-flex flex-row ms-5">
+            <span class="fw-bolder">Đã cọc</span>
+            <div style="width: 40px; height: 20px;" class="deposit ms-2"></div>
+        </div>
+        <div class="d-flex flex-row ms-5">
+            <span class="fw-bolder"> Lịch trống</span>
+            <div style="width: 40px; height: 20px; background-color: lightcoral;" class="empty ms-2"></div>
+        </div>
+        <div class="d-flex flex-row ms-5">
+            <span class="fw-bolder">Quá hạn đá</span>
+            <div style="width: 40px; height: 20px;background-color: rgb(226, 130, 95);" class="deposit ms-2 text-warning"></div>
+        </div>
+    </div>
+    <div class="content table-schedule table-responsive">
+        <!-- <nz-table #fixedTable [nzScroll]="{ x: '1600px'}" nzBordered #basicTable [nzData]="[1]" [nzShowPagination]="false"> -->
+        <nz-table nzBordered #basicTable [nzData]="[1]" [nzShowPagination]="false">
+            <thead>
+                <tr>
+                    <th style="border-left: 1px solid #1e463c !important;border-bottom: 1px solid #1e463c !important;" nzLeft class="w-100px text-center fs-4">Thứ</th>
+                    <ng-container *ngFor="let item of listFootballField; index as index">
+                        <ng-container *ngIf="item.status == '2'; else other_content">
+                            <th style="min-width: 250px !important;border-bottom: 1px solid #1e463c !important;" class="text-center">
+                                <div class="d-flex align-items-center justify-content-center" nzTooltipTitle="Sân có sự cố" nz-tooltip [nzTooltipColor]="'orange'">
+                                    <span class="fs-5">{{item.name}}</span>
+                                    <span class="san5" *ngIf="item.type == '1'">Sân 5</span>
+                                    <span class="san7" *ngIf="item.type == '2'">Sân 7</span>
+                                    <span class="san11" *ngIf="item.type == '3'">Sân 11</span>
+                                    <a href="/vat-chat/{{item.id}}" style="cursor: pointer;font-weight: 500;" class="ms-2">
+                                        <i class="fas fa-exclamation-triangle text-warning"></i>
+                                    </a>
+                                </div>
+                            </th>
+                        </ng-container>
+                        <ng-template #other_content>
+                            <th style="min-width: 250px !important; border-bottom: 1px solid #1e463c !important;" class="text-center">
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <span class="fs-5">{{item.name}}</span>
+                                    <span class="san5" *ngIf="item.type == '1'">Sân 5</span>
+                                    <span class="san7" *ngIf="item.type == '2'">Sân 7</span>
+                                    <span class="san11" *ngIf="item.type == '3'">Sân 11</span>
+                                </div>
+                            </th>
+                        </ng-template>
+                    </ng-container>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let day of listDayOfWeek; index as i">
+                    <ng-container *ngIf="day.getDay() == 0;else other_content">
+                        <td nzLeft class="text-center" style="vertical-align: middle;border-left: 1px solid #1e463c !important; background-color: #f1f0f0;">
+                            <span class="fs-5 fw-bold">Chủ nhật</span><br>
+                            <span class="fs-5">{{day | date: 'dd/MM/yyyy'}}</span>
+                        </td>
+                    </ng-container>
+                    <ng-template #other_content>
+                        <td nzLeft class="text-center" style="vertical-align: middle; border-left: 1px solid #1e463c !important; background-color: #f1f0f0;">
+                            <span class="fs-5 fw-bold">{{"Thứ "+ (day.getDay() +1)}}</span><br>
+                            <span class="fs-5">{{day | date: 'dd/MM/yyyy'}}</span>
+                        </td>
+                    </ng-template>
+                    <ng-container *ngFor="let football of listFootballField; index as j">
+                        <td>
+                            <ng-container *ngIf="daysCalender[i][j]?.listBooking;else dayEmpty">
+                                <nz-collapse *ngIf="isbookingEmpty" nzGhost>
+                                    <nz-collapse-panel class="empty_slot" [nzHeader]="'Lịch trống ('+daysCalender[i][j]?.amountEmpty +')'" [nzActive]="isbookingEmpty">
+                                        <div *ngFor="let booking of daysCalender[i][j].listBooking; index as index">
+                                            <ng-container *ngIf="(booking?.status != '1'&&booking?.status !=2)">
+                                                <div (click)="addOrEditDayOfWeekModal(booking,football,day,true)" class="empty mb-1">
+                                                    <span>{{booking?.slotDto?.name}}</span>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </nz-collapse-panel>
+                                </nz-collapse>
+                                <nz-collapse *ngIf="isbookingDeposit" nzGhost>
+                                    <ng-container *ngIf="daysCalender[i][j]?.amountDeposit > 0">
+                                        <nz-collapse-panel class="deposit_slot" [nzHeader]="'Đặt cọc ('+daysCalender[i][j]?.amountDeposit +')'" [nzActive]="isbookingDeposit">
+                                            <div *ngFor="let booking of daysCalender[i][j].listBooking; index as index">
+                                                <ng-container *ngIf="booking?.status == '1'">
+                                                    <div *ngIf="isOutDate(booking);else outDate" (click)="addOrEditDayOfWeekModal(booking,football,day,true)" style="background-color: rgb(226, 130, 95);" class="deposit mb-1" nzTooltipTitle="Quá hạn đá" nz-tooltip [nzTooltipColor]="'orange'">
+                                                        <span>{{booking?.slotDto?.name}}</span>
+                                                    </div>
+                                                    <ng-template #outDate>
+                                                        <div (click)="addOrEditDayOfWeekModal(booking,football,day,true)" class="deposit mb-1">
+                                                            <span>{{booking?.slotDto?.name}}</span>
+                                                        </div>
+                                                    </ng-template>
+                                                </ng-container>
+                                            </div>
+                                        </nz-collapse-panel>
+                                    </ng-container>
+                                </nz-collapse>
+                                <nz-collapse *ngIf="isbookingPaid" nzGhost>
+                                    <ng-container *ngIf="daysCalender[i][j]?.amountPaid > 0">
+                                        <nz-collapse-panel class="paid_slot" [nzHeader]="'Thanh toán ('+daysCalender[i][j]?.amountPaid +')'" [nzActive]="isbookingPaid">
+                                            <div *ngFor="let booking of daysCalender[i][j].listBooking; index as index">
+                                                <ng-container *ngIf="booking?.status == '2'">
+                                                    <div (click)="addOrEditDayOfWeekModal(booking,football,day,true)" class="paid mb-1">
+                                                        <span>{{booking?.slotDto?.name}}</span>
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+                                        </nz-collapse-panel>
+                                    </ng-container>
+                                </nz-collapse>
+                            </ng-container>
+                            <ng-template #dayEmpty>
+                                <nz-collapse *ngIf="isbookingEmpty" nzGhost>
+                                    <nz-collapse-panel class="empty_slot" [nzHeader]="'Lịch trống ('+listSlot.length+')'" [nzActive]="isbookingEmpty">
+                                        <ng-container *ngFor="let slot of listSlot; index as s">
+                                            <div (click)="addOrEmptySlot(slot,football,day)" class="empty mb-1" style="cursor: pointer;">
+                                                <span>{{slot.name}}</span>
+                                            </div>
+                                        </ng-container>
+                                    </nz-collapse-panel>
+                                </nz-collapse>
+                            </ng-template>
+                        </td>
+                    </ng-container>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>

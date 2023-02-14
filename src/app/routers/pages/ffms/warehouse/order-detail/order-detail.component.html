@@ -1,0 +1,89 @@
+<div ngProjectAs="card-body">
+    <div enterKey (enterKeyEvent)="fetchData()">
+        <nz-tabset nzType="card">
+            <nz-tab nzTitle="Tìm kiếm nâng cao">
+                <div class="row">
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Tên Cơ sở</label><br>
+                        <input class="form-control" type="text" [disabled]="true" [ngModel]="foundationFieldName" class="form-control" placeholder="Nhập tên sân bóng">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Mã hóa đơn</label>
+                        <input [(ngModel)]="objFilter.orderCode" type="text" class="form-control" placeholder="Nhập mã hóa đơn">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Tên khách hàng</label>
+                        <input [(ngModel)]="objFilter.customerName" type="text" class="form-control" placeholder="Nhập tên khách hàng">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Tên nhân viên</label>
+                        <input [(ngModel)]="objFilter.employeeName" type="text" class="form-control" placeholder="Nhập tên nhân viên">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Thời gian giao dịch</label>
+                        <range-picker [(sModelStart)]="objFilter.fromDate" [(sModelEnd)]="objFilter.toDate"></range-picker>
+                    </div>
+                    <!-- <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Trạng thái thanh toán</label>
+                        <app-combobox [datas]="listStatusPayment" [(sModel)]="objFilter.status"></app-combobox>
+                    </div> -->
+                    <div class="mb-4 col-md-3 mt-8">
+                        <button (click)="fetchData()" class="btn btn-sm btn-primary me-1">
+                            <i class="fas fa-search"></i> Tìm kiếm
+                            </button>
+                        <button (click)="initFilter()" class="btn btn-sm btn-secondary ms-1">
+                            <i class="fas fa-sync"></i> Đặt lại
+                            </button>
+                    </div>
+                </div>
+            </nz-tab>
+            <nz-tab nzTitle="Tìm kiếm nhanh">
+                <div class="mb-4">
+                    <input id="search" placeholder="Nhập mã dơn, tên khách hàng để tìm kiếm..." autoFocus class="form-control" type="text" />
+                </div>
+            </nz-tab>
+        </nz-tabset>
+    </div>
+    <nz-tabset nzType="card" [(nzSelectedIndex)]="currentTab" (nzSelectChange)="tabChangeHandle()">
+        <nz-tab [nzTitle]="titleTemplate1">
+            <ng-template #titleTemplate1>
+                <nz-badge style="margin-right: 8px;" [nzCount]="choLayHangCount ? choLayHangCount : 0" nzShowZero [nzStyle]="{ backgroundColor: '#3699FF' }">
+                    <span style="padding-right: 16px;">Chờ lấy hàng</span>
+                </nz-badge>
+            </ng-template>
+            <div class="table-responsive">
+                <order-detail-table [listData]="listOrderDetail" [total]="this.total" [loading]="loading" (payment)="payment($event)" (editOrder)="addOrEditModal($event)" (view)="viewOrEditOrderDetail($event)" (viewPdf)="viewPdf($event)" (onChange)="onChangeQuery($event)"></order-detail-table>
+            </div>
+        </nz-tab>
+        <nz-tab [nzTitle]="titleTemplate2">
+            <ng-template #titleTemplate2>
+                <nz-badge style="margin-right: 8px;" [nzCount]="choThanhToanCount ? choThanhToanCount : 0" nzShowZero [nzStyle]="{ backgroundColor: '#FFA800' }">
+                    <span style="padding-right: 16px;">Đã lấy hàng</span>
+                </nz-badge>
+            </ng-template>
+            <div class="table-responsive">
+                <order-detail-table [listData]="listOrderDetail" [total]="this.total" [loading]="loading" (payment)="payment($event)" (editOrder)="addOrEditModal($event)" (view)="viewOrEditOrderDetail($event)" (viewPdf)="viewPdf($event)" (onChange)="onChangeQuery($event)"></order-detail-table>
+            </div>
+        </nz-tab>
+        <nz-tab [nzTitle]="titleTemplate3">
+            <ng-template #titleTemplate3>
+                <nz-badge style="margin-right: 8px;" [nzCount]="thanhToanCount ? thanhToanCount : 0" nzShowZero [nzStyle]="{ backgroundColor: '#52c41a' }">
+                    <span style="padding-right: 16px;">Đã thanh toán</span>
+                </nz-badge>
+            </ng-template>
+            <div class="table-responsive">
+                <order-detail-table [listData]="listOrderDetail" [total]="this.total" [loading]="loading" (payment)="payment($event)" (editOrder)="addOrEditModal($event)" (view)="viewOrEditOrderDetail($event)" (viewPdf)="viewPdf($event)" (onChange)="onChangeQuery($event)"></order-detail-table>
+            </div>
+        </nz-tab>
+        <nz-tab [nzTitle]="titleTemplate4">
+            <ng-template #titleTemplate4>
+                <nz-badge style="margin-right: 8px;" [nzCount]="huyCount ? huyCount : 0" nzShowZero [nzStyle]="{ backgroundColor: 'red' }">
+                    <span style="padding-right: 16px !important;">Đơn hủy</span>
+                </nz-badge>
+            </ng-template>
+            <div class="table-responsive">
+                <order-detail-table [listData]="listOrderDetail" [total]="this.total" [loading]="loading" (payment)="payment($event)" (editOrder)="addOrEditModal($event)" (view)="viewOrEditOrderDetail($event)" (viewPdf)="viewPdf($event)" (onChange)="onChangeQuery($event)"></order-detail-table>
+            </div>
+        </nz-tab>
+    </nz-tabset>
+</div>

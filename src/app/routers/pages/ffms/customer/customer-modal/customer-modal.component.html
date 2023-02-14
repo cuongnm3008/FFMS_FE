@@ -1,0 +1,81 @@
+<div id="modalCustomerInfor">
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Tên khách hàng <span *ngIf="!isView" class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.fullName" placeholder="Tên khách hàng" [disabled]="isView" />
+            <validation-custom nameField="Tên nhà cung cấp" [sModel]="dataItem.fullName"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Mã khách hàng <span *ngIf="!isView" class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.customerCode" placeholder="Mã khách hàng" [disabled]="isView" />
+            <validation-custom nameField="Tên nhà cung cấp" [sModel]="dataItem.customerCode"></validation-custom>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Số điện thoại<span *ngIf="!isView" class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.phone" placeholder="Số điện thoại" [disabled]="isView" mask="0000 000 000" sMinlength="9" sMaxlength="11" />
+            <validation-custom nameField="Số điện thoại" [sModel]="dataItem.phone"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Giới Tính<span *ngIf="!isView"class="text-red"> (*)</span></label>
+            <custom-combobox [datas]="lstGender" [selectdId]="dataItem.gender" (sModelChange)="dataItem.gender= $event" [isDisabled]="isView">
+            </custom-combobox>
+            <validation-custom [nameField]="'Giới Tính'" [sModel]="dataItem.gender"></validation-custom>
+            <!-- <label class="form-label fw-bolder">Giới Tính<span class="text-red"> (*)</span></label>
+            <custom-combobox [datas]="lstGender" [selectdId]="dataItem.gender" (sModelChange)="dataItem.gender= $event" [isDisabled]="isView">
+            </custom-combobox>
+            <validation-custom [nameField]="'Giới Tính'" [sModel]="dataItem.gender"></validation-custom> -->
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Địa chỉ<span class="text-red"> </span></label>
+            <input class="form-control" [(ngModel)]="dataItem.address" placeholder="Địa chỉ" [disabled]="isView" />
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Ngày Sinh<span class="text-red"></span></label>
+            <date-picker [(sModel)]="dataItem.birthDate" (onDateChange)="dataItem.birthDate = $event" [isDisabled]="isView" placeholder=" dd-mm-yyyy"></date-picker>
+            <!-- <validation-custom [nameField]="'Ngày sinh'" [sModel]="dataItem.birthDate"></validation-custom> -->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Đường dẫn Facebook<span class="text-red"> </span></label>
+            <input class="form-control" [(ngModel)]="dataItem.facebook" placeholder="Đường dẫn facebook" [disabled]="isView" />
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Kiểu khách hàng<span class="text-red"></span></label>
+            <app-combobox [datas]="lstStatus" [(sModel)]="dataItem.status" [isDisabled]="isView"></app-combobox>
+        </div>
+        <!-- <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Email<span class="text-red"></span></label>
+            <input class="form-control" [(ngModel)]="dataItem.email" placeholder="Email" [disabled]="isView" />
+        </div> -->
+    </div>
+    <!-- <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Trạng thái<span class="text-red"></span></label>
+            <app-combobox [datas]="lstStatus" [(sModel)]="dataItem.status" [isDisabled]="isView"></app-combobox>
+        </div>
+    </div> -->
+    <!-- <div>
+        <label>Upload ảnh khách hàng</label>
+        <upload-image (urlImage)="dataItem.image = $event" [fileList]="fileList"></upload-image>
+    </div> -->
+    <div class="row">
+        <label class="form-label fw-bolder">Tải ảnh khách hàng </label>
+        <upload-image (urlImage)="dataItem.image = $event" [fileList]="fileList"></upload-image>
+    </div>
+    <ng-template [nzModalFooter]>
+        <button *ngIf="!isView && !isEdit" (click)="save()" class="btn btn-sm btn-primary" style="margin-right: 10px;">
+          <i class="fa fa-save"></i>
+          Lưu
+        </button>
+        <button *ngIf="!isView && isEdit" (click)="update()" class="btn btn-sm btn-primary" style="margin-right: 10px;">
+          <i class="fa fa-save"></i>
+          Cập Nhật
+        </button>
+        <button (click)="close()" class="btn btn-sm btn-secondary"><i class="fas fa-times"></i> Đóng</button>
+    </ng-template>

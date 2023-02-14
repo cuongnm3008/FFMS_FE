@@ -1,0 +1,34 @@
+<div id="modalSupplierInfor">
+    <div class="mb-5">
+        <label class="form-label fw-bolder">Tên nhà cung cấp<span *ngIf="!isView" class="text-red"> (*)</span></label>
+        <input class="form-control" [(ngModel)]="dataItem.name" placeholder="Tên nhà cung cấp" [disabled]="isView" />
+        <validation-custom nameField="Tên nhà cung cấp" [sModel]="dataItem.name"></validation-custom>
+    </div>
+    <div class="mb-5">
+        <label class="form-label fw-bolder">Số điện thoại<span *ngIf="!isView" class="text-red"> (*)</span></label>
+        <input class="form-control" [(ngModel)]="dataItem.phone" placeholder="Số điện thoại" [disabled]="isView" />
+        <validation-custom nameField="Số điện thoại" [sModel]="dataItem.phone"></validation-custom>
+    </div>
+    <div class="mb-5">
+        <label class="form-label fw-bolder">Email<span class="text-red"></span></label>
+        <input class="form-control" [(ngModel)]="dataItem.email" placeholder="Email" [disabled]="isView" />
+    </div>
+    <div class="mb-5">
+        <label class="form-label fw-bolder">Địa chỉ<span class="text-red"> </span></label>
+        <input class="form-control" [(ngModel)]="dataItem.address" placeholder="Địa chỉ" [disabled]="isView" />
+    </div>
+    <div class="mb-5">
+        <label class="form-label fw-bolder">Tình trạng<span  *ngIf="!isView" class="text-red"> (*)</span></label>
+        <app-combobox [datas]="lstStatus" [(sModel)]="dataItem.status" [isDisabled]="isView"></app-combobox>
+    </div>
+    <ng-template [nzModalFooter]>
+        <button *ngIf="!isView && !isEdit" (click)="save()" class="btn btn-sm btn-primary" style="margin-right: 10px;">
+          <i class="fa fa-save"></i>
+          Lưu
+        </button>
+        <button *ngIf="!isView && isEdit" (click)="save()" class="btn btn-sm btn-primary" style="margin-right: 10px;">
+          <i class="fa fa-save"></i>
+          Cập Nhật
+        </button>
+        <button (click)="close()" class="btn btn-sm btn-secondary"><i class="fas fa-times"></i> Đóng</button>
+    </ng-template>

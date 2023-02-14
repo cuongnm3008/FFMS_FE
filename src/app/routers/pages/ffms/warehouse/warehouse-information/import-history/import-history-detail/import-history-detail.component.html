@@ -1,0 +1,79 @@
+<div id="orderDetailView">
+    <!-- <div class="order-details-wrapper"> -->
+    <h3 class="mb-4 text-gray-800 text-hover-primary fw-bolder text-uppercase text-center">Mã nhập hàng #{{dataItem.importCouponCode}}</h3>
+    <hr>
+    <!-- <div class="bar-wrapper"> -->
+    <!-- <div class="action-bar clearfix">
+    </div> -->
+    <div class="action-complete-bar">
+        <!-- <span class="done">Done</span> -->
+    </div>
+    <!-- </div> -->
+    <!-- end bar-wrapper -->
+    <div>
+        <h5 class="mb-5 mt-5 text-gray-800  fw-bolder text-uppercase">1.Thông tin nhập hàng</h5>
+    </div>
+    <div class="header-info-mask">
+        <div class="header-info d-flex justify-content-between">
+            <div class="field">
+                <span class="value-label">Tên nhà cung cấp</span>
+                <span class="value">{{dataItem.supplierName ? dataItem.supplierName :"Khách lạ"}}</span>
+            </div>
+            <div class="field">
+                <span class="value-label">Ngày nhập hàng</span>
+                <span class="value">{{dataItem.importDate | date: 'dd/MM/yyyy'}}</span>
+            </div>
+
+            <div class="field">
+                <span class="value-label">Tên nhân viên</span>
+                <span class="value">{{ dataItem.importName ? dataItem.importName :"N/A"}}</span>
+            </div>
+            <div class="field">
+                <span class="value-label">Tổng tiền nhập hàng</span>
+                <span class="value">{{ dataItem.totalPrice | mask: 'separator.0':',' }} VNĐ</span>
+            </div>
+        </div>
+        <div class="w-100 header-info">
+            <div class="field">
+                <span class="value-label">Ghi chú</span>
+                <span class="value">{{ dataItem.description ? dataItem.description :"N/A"}}</span>
+            </div>
+        </div>
+        <!-- </div> -->
+    </div>
+    <!-- end header-info-mask -->
+    <div class="line-listing-wrapper">
+        <h5 class="mb-5 mt-5 text-gray-800  fw-bolder text-uppercase">2.Danh sách sản phẩm</h5>
+        <table class="table">
+            <thead class="ant-table-thead">
+                <tr>
+                    <th class="text-center">#</th>
+
+                    <!-- <th class="fs-4">Mã sản phẩm</th> -->
+                    <th class="text-center">Tên sản phẩm</th>
+                    <!-- <th class="text-center fs-4">Thương hiệu</th> -->
+                    <th class="text-center">Giá nhập</th>
+                    <th class="text-center">Số lượng</th>
+                    <th class="text-center">Ngày nhập hàng</th>
+                    <!-- <th class="fs-4">Ngày hết hạn</th> -->
+                    <th class="text-center">Đơn giá</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let item of lstItem; index as index">
+                    <td class="text-center">{{index + 1}}</td>
+                    <td> {{item.productName}} </td>
+                    <td class="text-center"> {{item.price | mask: 'separator.0':','}} VNĐ </td>
+                    <td class="text-center">{{item.amount }}</td>
+                    <td class="text-center">{{item.importDate | date: 'dd/MM/yyyy'}} </td>
+                    <td class="text-center">{{item.totalPrice | mask: 'separator.0':','}} VNĐ</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- end wrapper -->
+<ng-template [nzModalFooter]>
+    <button (click)="close()" class="btn btn-sm btn-secondary"><i class="fas fa-times"></i> Đóng</button>
+</ng-template>

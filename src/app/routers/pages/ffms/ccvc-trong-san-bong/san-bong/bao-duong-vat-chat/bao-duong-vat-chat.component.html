@@ -1,0 +1,67 @@
+<div id="modalBaoDuong">
+    <div class="row">
+        <div class="col-md-8 mb-5">
+            <label for="search" class="form-label fw-bolder">Tên vật chất</label>
+            <input class="form-control" type="text" [(ngModel)]="dataItem.name" class="form-control" [disabled]="true">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Thời gian gặp trục trặc <span class="text-red"> (*)</span></label>
+            <date-picker [(sModel)]="dataItem.maintenanceTime" (onDateChange)="dataItem.maintenanceTime = $event" placeholder=" dd-mm-yyyy"></date-picker>
+            <validation-custom [nameField]="'Thời gian gặp trục trặc'" [nameField]="'Ngày sinh'" [sModel]="dataItem.maintenanceTime"></validation-custom>
+            <!-- <validation-custom [nameField]="'Thời gian bảo trì'" [sModel]="dataItem.maintenanceTime"></validation-custom> -->
+        </div>
+        <div class="col-md-6 mb-5">
+            <label *ngIf="dataItem.status == '3'" class="form-label fw-bolder">Thời gian xử lý hoàn thành<span class="text-red"> (*)</span></label>
+            <label *ngIf="dataItem.status != '3'" class="form-label fw-bolder">Thời gian xử lý hoàn thành<span class="text-red"></span></label>
+            <date-picker [(sModel)]="dataItem.finishTime" (onDateChange)="dataItem.finishTime = $event" placeholder=" dd-mm-yyyy"></date-picker>
+            <validation-custom [nameField]="'Thời gian xử lý hoàn thành'" *ngIf="dataItem.status == '3'" [nameField]="'Thời gian hoàn thành'" [sModel]="dataItem.finishTime"></validation-custom>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Số lượng vật chất hiện tại<span class="text-red"></span></label>
+            <input class="form-control" [(ngModel)]="dataItem.amount" [disabled]="true" />
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Số lượng bị hỏng<span class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.repairAmount" placeholder="Số lượng bị hỏng" mask="00" sMinlength="1" sMaxlength="2" />
+            <!-- <span *ngIf="validaorRes" class="form-control-feedback custom-error-validate" style="display: inline; color: red;">{{validaorRes}}</span> -->
+            <validation-custom [nameField]="'Số lượng bị hỏng'" [sModel]="dataItem.repairAmount"></validation-custom>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Trạng thái chất lương<span class="text-red"> (*)</span></label>
+            <app-combobox [datas]="lstStatus" [(sModel)]="dataItem.status"></app-combobox>
+            <validation-custom [nameField]="'Trạng thái chất lương'" [sModel]="dataItem.status"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label *ngIf="dataItem.status == '3'" class="form-label fw-bolder">Chi phí sửa chữa (vnđ)<span class="text-red">  (*)</span></label>
+            <label *ngIf="dataItem.status != '3'" class="form-label fw-bolder">Chi phí sửa chữa (vnđ)<span class="text-red"></span></label>
+            <input class="form-control" [(ngModel)]="dataItem.repairCost" placeholder="Chi phí sửa chữa" mask="separator.0" thousandSeparator="," />
+            <validation-custom [nameField]="'Chi phí sửa chữa'" *ngIf="dataItem.status == '3'" [sModel]="dataItem.repairCost"></validation-custom>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 mb-5">
+            <label *ngIf="dataItem.status == '3'" class="form-label fw-bolder">Mô tả tình trạng<span class="text-red"></span></label>
+            <label *ngIf="dataItem.status != '3'" class="form-label fw-bolder">Mô tả tình trạng <span class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.description" placeholder="Ghi chú" />
+            <validation-custom *ngIf="dataItem.status != '3'" [nameField]="'Ghi chú'" [sModel]="dataItem.status"></validation-custom>
+        </div>
+    </div>
+    <div class="row">
+        <label class="form-label fw-bolder">Tải ảnh vật chất </label>
+        <upload-image (urlImage)="dataItem.image = $event" [fileList]="fileList"></upload-image>
+    </div>
+
+    <ng-template [nzModalFooter]>
+        <button *ngIf="dataItem.status != '3'" (click)="save()" class="btn btn-sm btn-primary" style="margin-right: 10px;"><i class="fa fa-save"></i>
+      Cập nhật</button>
+        <button *ngIf="dataItem.status == '3'" (click)="save()" class="btn btn-sm btn-primary" style="margin-right: 10px;"><i class="fa fa-save"></i>
+      Bảo trì</button>
+        <button (click)="close()" class="btn btn-sm btn-secondary"><i class="fas fa-times"></i> Đóng</button>
+    </ng-template>

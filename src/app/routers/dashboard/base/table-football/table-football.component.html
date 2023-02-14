@@ -1,0 +1,7 @@
+<div class="table-football">
+    <div class="table-responsive">
+        <h3 class="fw-bolder">TÌNH TRẠNG SÂN</h3>
+        <football-chart-table [listData]="listFootballField" [total]="objFilter.total" (onChange)="onChangeQuery($event)" [loading]="loading">
+        </football-chart-table>
+    </div>
+</div>

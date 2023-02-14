@@ -1,0 +1,17 @@
+.bagde-deposit {
+    background-color: #a2d09d;
+    color: #333;
+    margin-left: 10px;
+    padding: 10px 20px;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.bagde-paid {
+    background-color: #4CACBC;
+    color: #333;
+    margin-left: 10px;
+    padding: 10px 20px;
+    font-weight: 700;
+    font-size: 15px;
+}

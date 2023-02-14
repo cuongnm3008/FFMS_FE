@@ -1,0 +1,19 @@
+#doAn .ant-tabs-nav-wrap {
+    display: flex;
+    justify-content: center;
+}
+
+#doTap .ant-tabs-nav-wrap {
+    display: flex;
+    justify-content: center;
+}
+
+#kt_subheader {
+    height: 70px;
+}
+
+.ant-modal-close-x {
+    position: absolute;
+    top: -16px;
+    right: -15px;
+}

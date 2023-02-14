@@ -1,0 +1,177 @@
+<!-- <div class="container emp-profile p-5"> -->
+<div class="row">
+    <div class="col-md-4">
+        <div class="profile-img">
+            <nz-avatar style="width: 200px; height: 200px;" *ngIf="!dataItem.image" nzIcon="user" nzSrc="../../../../assets/images/Sanbongnhantao.jpg"></nz-avatar>
+            <nz-avatar style="width: 200px; height: 200px;" nzSize="300" *ngIf="dataItem.image" nzIcon="user" nzSrc="{{dataItem.image}}"></nz-avatar>
+        </div>
+    </div>
+    <div class="col">
+        <div class="profile-head">
+            <h2 class="proile-rating fw-bold">
+                <span class="fs-3">
+                   {{dataItem.name}} -
+                </span>
+                <span *ngIf="dataItem.status == 1" class="badge badge-success fs-5"> Hoạt động bình thường</span>
+                <span *ngIf="dataItem.status == 0 " class="badge badge-danger fs-5"> Dừng hoạt động</span>
+                <span *ngIf="dataItem.status == 2 " class="badge badge-warning fs-5"> Gặp sự cố</span>
+            </h2>
+
+            <hr>
+            <div class="">
+                <div class="row">
+                    <div class="col-md-8">
+                        <label class=" fw-bold">TÊN CƠ SỞ :</label> &nbsp;
+                        <span>{{  dataItem.foundationName.length > 0 ? dataItem.foundationName : ""}}</span>
+                    </div>
+                    <!-- <label class="proile-rating fw-bold">TÊN CƠ SỞ : <span>
+                        <span>{{dataItem.foundationName.length > 0 ? dataItem.foundationName : ""}}</span>
+                            </span>
+                        </label> -->
+                    <div class="col-md-4">
+                        <label class="fw-bold">KIỂU SÂN :</label>&nbsp;
+                        <span *ngIf="dataItem.type == 1"> Sân 5</span>
+                        <span *ngIf="dataItem.type == 2"> Sân 7</span>
+                        <span *ngIf="dataItem.type == 3"> Sân 11</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <label class="fw-bold">GIÁ SÂN :</label>&nbsp;
+                    <span> {{dataItem.price | mask: 'separator.0':','}} VNĐ</span>
+                </div>
+                <div class="col-md-4">
+                    <label class="fw-bold">CHIỀU DÀI:</label>&nbsp;
+                    <span>{{dataItem.length}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <label class="fw-bold">NGÀY HOẠT ĐỘNG :</label>&nbsp;
+                    <span>  {{dataItem.startDate | date: 'dd/MM/yyyy'}}</span>
+                </div>
+                <div class="col-md-4">
+                    <label class="fw-bold">CHIỀU CAO :</label>&nbsp;
+                    <span>  {{dataItem.heigth}} Mét</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <label class="fw-bold">GHI CHÚ :</label>&nbsp;
+                    <span>  {{dataItem.description}} Mét</span>
+                </div>
+                <div class="col-md-4">
+                    <label class="fw-bold">CHIỀU RỘNG :</label>&nbsp;
+                    <span>  {{dataItem.width}} Mét</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="col-md-1 fs-3">
+    <span *ngIf="dataItem.status == 1" class="badge badge-success fs-5">Hoạt động bình thường</span>
+    <span *ngIf="dataItem.status == 2 " class="badge badge-danger fs-5">Bảo trì</span>
+    <span *ngIf="dataItem.status == 3 " class="badge badge-warning fs-5">Gặp sự cố</span>
+</div> -->
+<!-- </div> -->
+<!-- </div> -->
+<ng-template [nzModalFooter]>
+    <button (click)="close()" class="btn btn-sm btn-secondary"><i class="fas fa-times"></i> Đóng</button>
+</ng-template>
+<!-- <div class="d-flex">
+    <div class="mr-auto p-2">
+        <span class="proile-rating fw-bold">
+          <span class="fs-2 text-uppercase">
+              {{dataItem.name}}
+          </span>
+        </span>
+    </div>
+    <div class="p-2 fw-bold">
+        <span *ngIf="dataItem.status == 1" class="badge badge-success fs-5">Hoạt động bình thường</span>
+        <span *ngIf="dataItem.status == 2 " class="badge badge-danger fs-5">Bảo trì</span>
+        <span *ngIf="dataItem.status == 3 " class="badge badge-warning fs-5">Gặp sự cố</span>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-5">
+        <div class="profile-img" style="width:100%">
+            <img src="../../../../assets/images/sanbongdaiduong.jpg" alt="sân bóng" />
+            <!-- <div class="file btn btn-lg btn-primary" hidden>
+                        Change Photo
+                        <input type="file" name="file" />
+                    </div>
+</div>
+</div>
+<div class="col-md-6">
+    <div class="row">
+        <div class="col-md-6">
+            <h5 class="proile-rating fw-bold">TÊN CƠ SỞ :
+                <span>
+                    {{dataItem.foundationName}}
+                    </span>
+            </h5>
+        </div>
+        <div class="col-md-6">
+            <h5 class="proile-rating fw-bold">KIỂU SÂN :
+                <span *ngIf="dataItem.type == 1">Sân đá 5</span>
+                <span *ngIf="dataItem.type == 2">Sân đá 7</span>
+                <span *ngIf="dataItem.type == 3">Sân đá 11</span>
+            </h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h5 class="proile-rating fw-bold">CHIỀU DÀI :
+                <span>
+                        {{dataItem.length}}
+            </span>
+            </h5>
+        </div>
+        <div class="col-md-6">
+            <h5 class="proile-rating fw-bold">CHIỀU RỘNG :
+                <span>
+               {{dataItem.width}}
+            </span>
+            </h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h5 class="proile-rating fw-bold">CHIỀU CAO:
+                <span>
+                     {{dataItem.length}}
+                    </span>
+            </h5>
+        </div>
+        <div class="col-md-6">
+            <h5 class="proile-rating fw-bold">GIÁ SÂN :
+                <span>
+                        {{dataItem.price | mask: 'separator.0':','}} VNĐ
+                      </span>
+            </h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10">
+            <h5 class="proile-rating fw-bold">NGÀY HOẠT ĐỘNG:
+                <span>
+                    {{dataItem.startDate | date: 'dd/MM/yyyy'}}
+                    </span>
+            </h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10">
+            <h5 class="proile-rating fw-bold">MÔ TẢ:
+                <span>
+                    {{dataItem.description}}
+                    </span>
+            </h5>
+        </div>
+    </div>
+</div>
+<ng-template [nzModalFooter]>
+    <button (click)="close()" class="btn btn-sm btn-secondary"><i class="fas fa-times"></i> Đóng</button>
+</ng-template>
+</div> -->

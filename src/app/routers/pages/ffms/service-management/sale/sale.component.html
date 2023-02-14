@@ -1,0 +1,242 @@
+<div id="createOrder">
+    <div class="row" style="position: relative;">
+        <div [class]="((isbooking||this.type == 'payment') ? 'col-lg-12' : 'col-lg-7')+' wrapper-order'">
+            <div class="content">
+                <div class="order-body">
+                    <nz-tabset [(nzSelectedIndex)]="selectedIndex" nzType="editable-card" (nzAdd)="newTab()" (nzClose)="closeTab($event)">
+                        <nz-tab *ngFor="let tab of tabs" nzClosable [nzTitle]="tab.name">
+                            <div id="order-section">
+                                <ng-container *ngIf="type;else other_content">
+                                    <div class="row">
+                                        <ng-container *ngIf="bookingDto; else other_infor">
+                                            <div class="col-md-4">
+                                                <span *ngIf="bookingDto"><span  class="me-2 fw-bold"> Khách hàng :</span>{{bookingDto['customer']['fullName']}} - {{bookingDto['customer']['phone']}}</span>
+                                                <hr>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span *ngIf="slotDto"><span  class="me-2 fw-bold"> Ca đặt :</span>{{slotDto['name']}} - {{slotDto['time']}}</span>
+                                                <hr>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span *ngIf="bookingDto"><span  class="me-2 fw-bold"> Sân bóng :</span>{{bookingDto['footballName']}}</span>
+                                                <hr>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span *ngIf="bookingDto"><span  class="me-2 fw-bold"> Tiền sân:</span>{{bookingDto['price']}} đ</span>
+                                                <hr>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span *ngIf="bookingDto"><span  class="me-2 fw-bold"> Tiền cọc :</span>{{bookingDto['deposit']}} đ</span>
+                                                <hr>
+                                            </div>
+                                        </ng-container>
+                                        <ng-template #other_infor>
+                                            <div class="col-md-8">
+                                                <span><span  class="me-2 fw-bold"> Khách hàng :</span>Khách lạ</span>
+                                                <hr>
+                                            </div>
+                                        </ng-template>
+                                        <div *ngIf="this.type != 'payment'" class="col-md-4">
+                                            <button (click)="posProduct()" href="javascript:;" class="btn btn-sm btn-primary">
+                                            Menu sản phẩm
+                                            </button>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <ng-template #other_content>
+                                </ng-template>
+                                <div class="products" *ngIf="tabs[selectedIndex].products && tabs[selectedIndex].products.length; else noData">
+                                    <nz-table nzShowSizeChanger [nzData]="tabs[selectedIndex].products" [nzFrontPagination]="false" [nzLoading]="false" [nzPageSize]="objFilter.pageSize" [nzPageIndex]="pageIndex" (nzQueryParams)="onQueryParamsChange($event)">
+                                        <thead>
+                                            <tr>
+                                                <th class="w-50px text-center">STT</th>
+                                                <th class="max-w-300px">Sản phẩm</th>
+                                                <th class="w-100px text-center">Giá bán</th>
+                                                <th class="w-200px text-center">Số lượng cần lấy</th>
+                                                <!-- <th *ngIf="this.type == 'payment'" class="text-center">Thông tin hàng cần lấy</th> -->
+                                                <th class="w-200px text-center">Số lượng thực tế</th>
+                                                <!-- <th *ngIf="this.type == 'payment'" class="text-center">Thông tin lấy hàng thay đổi</th> -->
+                                                <th class="w-100px text-center">Tổng tiền</th>
+                                                <th class="w-100px text-center">Thao Tác</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ng-container *ngFor="let item of tabs[selectedIndex].products; index as index">
+                                                <tr [class]="item.isAmountChange ?(item.isConfirm == true ?'bg-approve': (item.isConfirm == false ? 'bg-reject': 'bg-warn') ): ''">
+                                                    <td style="padding: 5px 0px !important;" class="text-center"> {{index + 1}}</td>
+                                                    <td><span class="fw-bolder">{{item.productCode}}</span>{{" - "+ item.name}}</td>
+                                                    <td class="text-center">{{item.price | mask: 'separator.0':','}} đ</td>
+                                                    <td class="text-center">
+                                                        <ng-container *ngIf="this.type != 'payment';else payment_content">
+                                                            <input [(ngModel)]="item.totalAmount" (change)="totalAmountChange(item)" class="form-control text-center" type="number">
+                                                            <span style="color: #d9534f;">{{item.message}}</span>
+                                                        </ng-container>
+                                                        <ng-template #payment_content>
+                                                            {{item.originAmount}}
+                                                        </ng-template>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        {{item.totalAmountReality}}
+                                                    </td>
+                                                    <td class="text-center">{{item.price*item.totalAmount | mask: 'separator.0':','}} đ</td>
+                                                    <td class="text-center">
+                                                        <ng-container *ngIf="item.isAmountChange&&item.isConfirm==null">
+                                                            <i style="color: #519259;" nzTooltipTitle="Khách đồng ý" (click)="confirm(item)" nz-tooltip class="fa-solid fa-check p-3"></i>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="item.isAmountChange&&item.isConfirm==null">
+                                                            <i style="color: #d9534f;" nzTooltipTitle="Khách không đồng ý" (click)="rejectItem(item)" nz-tooltip class="fas fa-times p-3"></i>
+                                                        </ng-container>
+                                                        <ng-container *ngIf="type !='payment'">
+                                                            <i style="color: #d9534f;" nzTooltipTitle="Xóa" (click)="deleteProduct(item)" nz-tooltip class="fas fa-trash-alt p-3"></i>
+                                                        </ng-container>
+                                                        <i *ngIf="item.isConfirm!=null" style="color: #d9534f;" nzTooltipTitle="Thao tác lại" (click)="unDo(item)" nz-tooltip class="fas fa-undo p-3"></i>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>
+                                        </tbody>
+                                    </nz-table>
+                                </div>
+                                <ng-template #noData>
+                                    <div class="d-flex flex-center flex-column pt-12 p-9">
+                                        <ng-container *ngIf="!type">
+                                            <div class="symbol symbol-65px mb-5">
+                                                <img src="./assets/media/png/error.png" alt="image">
+                                            </div>
+                                            <span class="fs-4 text-gray-500 mb-0">Vui lòng chọn sản phẩm trong Menu</span>
+                                        </ng-container>
+                                    </div>
+                                </ng-template>
+                            </div>
+                        </nz-tab>
+                    </nz-tabset>
+                </div>
+                <div *ngIf="(tabs[selectedIndex].products && tabs[selectedIndex].products.length)||type" class="order-footer">
+                    <div class="row">
+                        <div class="col-md-12 mb-4">
+                            <label class="form-label fw-bolder">Ghi chú đơn hàng</label>
+                            <textarea [(ngModel)]="tabs[selectedIndex].description" style=" height: auto !important;" class="form-control" rows="2" cols="3" placeholder="Nhập ghi chú đơn hàng"></textarea>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="item">
+                                <label class="form-label fw-bolder">Số lượng hàng:</label>
+                                <input [ngModel]="tabs[selectedIndex].totalCartItem" class="form-control text-center" type="text" placeholder="Số lượng" disabled>
+                            </div>
+                            <hr class="hr-2">
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="item">
+                                <label class="form-label fw-bolder">Tổng tiền:</label>
+                                <input [(ngModel)]="tabs[selectedIndex].totalPrice" class="form-control text-center" type="text" placeholder="Tổng tiền hàng" mask="separator.0" thousandSeparator="," suffix=" đ" disabled>
+                            </div>
+                            <hr class="hr-2">
+                        </div>
+                        <div *ngIf="bookingDto" class="col-md-6 mb-4">
+                            <div class="item">
+                                <label class="form-label fw-bolder">Tiền sân còn thiếu:</label>
+                                <input [ngModel]="bookingDto['price']-bookingDto['deposit']" class="form-control text-center" placeholder="Tiền sân còn thiếu" mask="separator.0" thousandSeparator="," suffix=" đ" disabled>
+                            </div>
+                            <hr class="hr-2">
+                        </div>
+                        <div *ngIf="type" class="col-md-6 mb-4">
+                            <div class="item">
+                                <label class="form-label fw-bolder">Giảm giá:</label>
+                                <input (change)="discountChange($event)" [(ngModel)]="tabs[selectedIndex].discount" class="form-control text-center" type="text" placeholder="Giảm giá %" mask="separator.2" suffix=" %">
+                            </div>
+                            <hr class="hr-2">
+                        </div>
+                        <div *ngIf="type" class="col-md-6 mb-4">
+                            <div class="item">
+                                <label class="form-label fw-bolder">Tiền khách đưa:</label>
+                                <input (change)="tienKhachDuaChange($event)" [(ngModel)]="tabs[selectedIndex].tienKhachDua" class="form-control text-center" type="text" placeholder="Tiền khách đưa" mask="separator.0" thousandSeparator="," suffix=" đ">
+                            </div>
+                            <span style="display: flex;justify-content: end;margin-top: 5px;">
+                          <!-- <validation-custom nameField="Tiền khách đưa" [sModel]="tabs[selectedIndex].tienKhachDua"></validation-custom> -->
+                        </span>
+                            <ng-container *ngIf="tabs[selectedIndex].tienKhachDua">
+                                <span *ngIf="isMessageTienKhachDua" class="form-control-feedback custom-error-validate" style="color: red;display: flex;justify-content: end;margin-top: 5px;">{{isMessageTienKhachDua}}</span>
+                            </ng-container>
+                            <hr class="hr-2">
+                        </div>
+                        <div *ngIf="type" class="col-md-6 mb-4">
+                            <div class="item">
+                                <label class="form-label fw-bolder">Thanh toán:</label>
+                                <input [(ngModel)]="tabs[selectedIndex].thanhToan" class="form-control text-center" type="text" placeholder="Thanh toán" mask="separator.0" thousandSeparator="," suffix=" đ" disabled>
+                            </div>
+                            <hr class="hr-2">
+                        </div>
+                        <div *ngIf="type" class="col-md-6 mb-4">
+                            <div class="item">
+                                <label class="form-label fw-bolder">Tiền thừa:</label>
+                                <input [(ngModel)]="tabs[selectedIndex].tienThua" class="form-control text-center" type="text" placeholder="Tiền thừa" mask="separator.0" thousandSeparator="," suffix=" đ" disabled>
+                            </div>
+                            <hr class="hr-2">
+                        </div>
+                        <div class="col-md-6" style="margin: 0px auto; display: flex; justify-content: center;">
+                            <!-- <a *ngIf="type=='payment'" href="javascript:;" class="btn btn-sm btn-primary btn-payment me-2">
+                                <i class="fas fa-check"></i>Xác nhận tất cả
+                            </a> -->
+                            <ng-container *ngIf="tabs[selectedIndex]?.products?.length > 0;else other_payment">
+                                <a *ngIf="type=='payment_slot'" (click)="payment(tabs[selectedIndex])" href="javascript:;" class="btn btn-sm btn-primary btn-payment">
+                                    <span>
+                                     <i  class="fas fa-money-check me-2"></i>Tạo hóa đơn
+                                   </span>
+                                </a>
+                                <a *ngIf="!type" (click)="payment(tabs[selectedIndex])" href="javascript:;" class="btn btn-sm btn-primary btn-payment">
+                                    <span>
+                                        <i   class="fas fa-money-check me-2"></i>Tạo hóa đơn
+                                </span>
+                                </a>
+                                <a *ngIf="type=='payment'&&!isPaid" (click)="pay(tabs[selectedIndex])" href="javascript:;" class="btn btn-sm btn-primary btn-payment">
+                                    <span>
+                                        <i  class="fas fa-file-invoice-dollar"></i>Thanh toán
+                                    </span>
+                                </a>
+                            </ng-container>
+                            <ng-template #other_payment>
+                                <a *ngIf="!isPaid" (click)="paymentSlot(tabs[selectedIndex])" href="javascript:;" class="btn btn-sm btn-primary btn-payment">
+                                    <i class="fas fa-file-invoice-dollar"></i>Thanh toán
+                                </a>
+                            </ng-template>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="product-section" class="product-wapper col-lg-5 p-2">
+            <div class="content">
+                <div class="product-header">
+                    <div class="row mb-2">
+                        <h5 class="mb-4 text-center text-gray-800 fw-bolder text-uppercase">Menu</h5>
+                        <div class="mb-4">
+                            <label class="form-label fw-bolder">Tìm sản phẩm:</label>
+                            <input id="search" [(ngModel)]="objFilter.textSearch" (ngModelChange)="searchHandle()" placeholder="Nhập tên, mã sản phẩm để tìm kiếm..." autoFocus class="form-control" type="text" />
+                        </div>
+                        <div class="text-center">
+                            <nz-checkbox-group [(ngModel)]="checkOptionsOne" (change)="updateSingleChecked($event)"></nz-checkbox-group>
+                        </div>
+                        <hr class="hr-2">
+                    </div>
+                </div>
+                <div class="products-body">
+                    <ng-container *ngFor="let item of listProduct index as index">
+                        <div *ngIf="item.totalAmount > 0" class="item">
+                            <div class="infor">
+                                <img [src]="item.image" alt="image">
+                                <span>{{item.price | mask: 'separator.0':','}} đ</span>
+                                <p class="fw-bolder">SL: <span>{{item.totalAmount}}</span></p>
+                                <button class="btn-selected btn btn-outline-primary" (click)="addProduct(item)">Chọn</button>
+                            </div>
+                            <div class="detail">
+                                <h6>{{item.name}}</h6>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+                <div class="products-footer">
+                    <span class="totalProductPaging">Tổng số sản phẩm: {{objFilter.total}}</span>
+                    <nz-pagination (nzPageIndexChange)="pageIndexChange($event)" [nzPageSize]="objFilter.pageSize" [nzPageIndex]="objFilter.pageIndex" [nzTotal]="objFilter.total" nzSimple></nz-pagination>
+                </div>
+            </div>
+        </div>
+    </div>

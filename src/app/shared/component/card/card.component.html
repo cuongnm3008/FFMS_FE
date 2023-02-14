@@ -1,0 +1,13 @@
+<div class="card" [class]="classCard">
+    <div id="testthoma" class="card-header cursor-pointer" [class]="classCardHeader">
+        <div class="card-title m-0" [class]="classCardTitler">
+            <ng-content select="card-title"></ng-content>
+        </div>
+        <div class="card-toolbar float-right">
+            <ng-content select="card-toolbar"></ng-content>
+        </div>
+    </div>
+    <div class="card-body" [class]="classCardBody">
+        <ng-content select="card-body"></ng-content>
+    </div>
+</div>

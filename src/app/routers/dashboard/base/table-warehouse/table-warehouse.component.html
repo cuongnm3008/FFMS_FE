@@ -1,0 +1,6 @@
+<div class="table-football">
+    <div class="table-responsive">
+        <h3 class="fw-bolder">TÌNH TRẠNG KHO HÀNG</h3>
+        <warehouse-table-chart [listData]="listProductWarehouse" [total]="objFilter.total" (onChange)="onChangeQuery($event)" [loading]="loading"></warehouse-table-chart>
+    </div>
+</div>

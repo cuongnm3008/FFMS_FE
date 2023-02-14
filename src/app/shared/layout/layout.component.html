@@ -1,0 +1,116 @@
+<nz-layout class="app-layout">
+    <nz-sider style="z-index: 900 !important;" id="ffms-sidebar" class="menu-sidebar" nzCollapsible nzWidth="256px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed" [nzTrigger]="null">
+        <div class="sidebar-logo">
+            <a href="/index.html" target="_blank">
+                <img src="https://scontent.fhph3-1.fna.fbcdn.net/v/t1.15752-9/316177082_1348373472601093_3571843306103149375_n.png?_nc_cat=104&ccb=1-7&_nc_sid=ae9488&_nc_ohc=hvA4lYM0WU8AX_qZzPJ&_nc_ht=scontent.fhph3-1.fna&oh=03_AdTSVs77OhSrFIppB9asNomvXGzQNXF45hxJmK_ceMWsSQ&oe=63AA1633"
+                    alt="logo">
+                <h1>FFMS</h1>
+            </a>
+        </div>
+        <ul nz-menu nzTheme="light" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+            <li nz-menu-item style="margin: 10px 0px 10px 0px;">
+                <span nz-icon nzType="home" nzIcon="home" nzTheme="outline"></span>
+                <span>
+          <a href="/" style="font-size: 18px;">Trang chủ</a>
+        </span>
+
+            </li>
+            <li nz-submenu *ngFor="let item of getMenuitems()" nzTitle="{{item.resourceName}}" nzIcon="{{item.icon}}" style="margin: 10px 0px 10px 0px;">
+                <ul *ngFor="let itemMenu of item.children">
+                    <li nz-menu-item nzMatchRouter>
+                        <span nz-icon nzType="{{itemMenu.icon}}" nzTheme="outline"></span>
+                        <span style="font-size: 16px">
+                          <a [routerLink]="[itemMenu.basePath]">
+                            {{itemMenu.resourceName}}
+                          </a>
+                        </span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nz-sider>
+    <nz-layout id="ffms-content">
+        <nz-header style="z-index: 99 !important;">
+            <div class="app-header">
+                <div class="navigation">
+                    <span class="header-trigger" (click)="headerTrigger()">
+                     <span class="trigger" nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
+                    </span>
+                    <nz-breadcrumb nz-page-header-breadcrumb nzSeparator=">">
+                        <nz-breadcrumb-item *ngFor="let item of getBreadcrumbItems()">
+                            <span style="font-size: 14px;" class="fw-bold">{{item}}</span>
+                        </nz-breadcrumb-item>
+                    </nz-breadcrumb>
+                </div>
+                <div class="dropdown me-5">
+                    <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px">
+                        <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1 w-100 p-5">
+                            <span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Hi,</span>
+                            <span class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">{{userDto.firstName +" "+ userDto.lastName}} ({{userDto.username}})</span>
+                            <span class="symbol symbol-lg-35 symbol-25 symbol-light-success">
+                          <div *ngIf="userDto.image;else other_content">
+                            <nz-avatar nzIcon="user" nzSrc="{{userDto.image}}"></nz-avatar>
+                          </div>
+                        <ng-template #other_content>
+                          <nz-avatar style="background-color: #f56a00" nzText="{{userDto.lastName.charAt(0)}}"></nz-avatar>
+                        </ng-template>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="dropdown-menu p-0 m-0 dropdown-menu-anim-up dropdown-menu-sm dropdown-menu-right">
+                        <ul class="navi navi-hover">
+                            <li class="navi-item">
+                                <a (click)="logout()" href="javascript:;" class="navi-link">
+                                    <span class="navi-text">
+                                    <i class="fas fa-solid fa-user"></i>
+                                    Thông tin tài khoản
+                                </span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a (click)="logout()" href="javascript:;" class="navi-link">
+                                    <span class="navi-text">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Đăng xuất
+                              </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </nz-header>
+        <nz-content>
+            <div class="site-page-header-ghost-wrapper mb-4 mt-12">
+                <nz-page-header nzBackIcon [nzGhost]="false">
+
+                    <nz-page-header-title style="font-size: 18px; text-transform: uppercase;">{{title}}</nz-page-header-title>
+
+                    <nz-page-header-extra *ngIf="nameBtn">
+                        <nz-space *ngIf="nameBtn">
+                            <button *nzSpaceItem nz-button (click)=" onBtnClick() " class="btn btn-primary " style="font-size: 14px; "> <i class="fas fa-plus-circle "></i> Thêm mới {{nameBtn}}</button>
+                        </nz-space>
+                        <nz-space *ngIf="newBtn =='Sân bóng'">
+                            <button *nzSpaceItem nz-button (click)=" redirectFootball() " class="btn btn-primary ml-2" style="font-size: 14px; "> <i class="fa fa-arrow-right "></i>Sân bóng</button>
+                        </nz-space>
+
+                    </nz-page-header-extra>
+                    <nz-page-header-extra *ngIf="!nameBtn">
+                        <nz-space *ngIf="newBtn =='Nhập hàng'">
+                            <button *nzSpaceItem nz-button (click)=" redirect() " class="btn btn-primary " style="font-size: 14px; "> <i class="fa fa-arrow-right "></i>Nhập hàng</button>
+                        </nz-space>
+                        <nz-space *ngIf="newBtn =='Sân bóng'">
+                            <button *nzSpaceItem nz-button (click)=" redirectFootball() " class="btn btn-primary ml-2" style="font-size: 14px; "> <i class="fa fa-arrow-right "></i>Sân bóng</button>
+                        </nz-space>
+                        <nz-space *ngIf="newBtn =='Đặt lịch'">
+                            <button *nzSpaceItem nz-button (click)=" redirectBooking() " class="btn btn-primary ml-2" style="font-size: 14px; "> <i class="fa fa-arrow-right "></i>Lịch sân</button>
+                        </nz-space>
+                    </nz-page-header-extra>
+                </nz-page-header>
+            </div>
+            <div [class]="isOtherInnerConent?'inner-content':''">
+                <router-outlet (activate)="onActivate($event) "></router-outlet>
+            </div>
+        </nz-content>
+    </nz-layout>
+</nz-layout>

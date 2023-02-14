@@ -1,0 +1,16 @@
+.col-auto i {
+    font-size: 20px;
+}
+
+.card-body {
+    padding: 20px !important;
+}
+
+.card {
+    min-height: 120px;
+    border-radius: 16px;
+}
+
+.col-md-5.bg-white {
+    border-radius: 16px !important;
+}

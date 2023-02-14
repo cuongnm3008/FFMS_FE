@@ -1,0 +1,80 @@
+<div ngProjectAs="card-body">
+    <div enterKey (enterKeyEvent)="fetchData()">
+        <nz-tabset nzType="card">
+            <nz-tab nzTitle="Tìm kiếm nâng cao">
+                <div class="row">
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Tên Cơ sở</label><br>
+                        <input class="form-control" type="text" [disabled]="true" [ngModel]="foundationFieldName" class="form-control" placeholder="Nhập tên sân bóng">
+                        <!-- <input class="fw-lighter pl-2" [sModel]> -->
+                        <!-- </input> -->
+                        <!-- <foundation-get-id-combobox [(sModel)]="foundationId" isDisabled="true"></foundation-get-id-combobox> -->
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Tên sân bóng</label>
+                        <input class="form-control" type="text" [(ngModel)]="objFilter.name" class="form-control" placeholder="Nhập tên sân bóng">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label class="form-label fw-bolder">Kiểu sân</label>
+                        <custom-combobox [(sModel)]="objFilter.foundationType" [datas]="listKieuSan"></custom-combobox>
+                        <!-- <custom-combobox [(sModel)]="dataItem.type" [datas]="listTrangKieuSan"></custom-combobox> -->
+                        <!-- <validation-custom [sModel]="dataItem.type "></validation-custom> -->
+                    </div>
+                    <div class="mb-4 col-md-3 mt-8">
+                        <button (click)="fetchData()" class="btn btn-sm btn-primary me-1">
+                            <i class="fas fa-search"></i> Tìm kiếm
+                            </button>
+                        <button (click)="initFilter()" class="btn btn-sm btn-secondary ms-1">
+                            <i class="fas fa-sync"></i> Đặt lại
+                            </button>
+                    </div>
+                </div>
+            </nz-tab>
+            <nz-tab nzTitle="Tìm kiếm nhanh">
+                <div class="mb-4">
+                    <input id="search" [(ngModel)]="objFilter.textSearch" (ngModelChange)="searchHandle()" placeholder="Nhập tên sân bóng, tình trạng sân mã sản phẩm để tìm kiếm..." autoFocus class="form-control" type="text" />
+                </div>
+            </nz-tab>
+        </nz-tabset>
+    </div>
+    <!-- <span class="badge-custom-1">{{countSanCoSuCo}}</span>
+    <span class="badge-custom-2">{{countSanHoatDong}}</span> -->
+    <nz-tabset nzType="card" [(nzSelectedIndex)]="currentTab" (nzSelectChange)="tabChangeHandle()">
+        <nz-tab [nzTitle]="titleTemplate">
+            <ng-template #titleTemplate>
+                <nz-badge style="margin-right: 8px;" [nzCount]="countSanCoSuCo ? countSanCoSuCo : 0" nzShowZero [nzStyle]="{ backgroundColor: '#FEDB39' }">
+                    <span style="padding-right: 16px;">Sân có sự cố</span>
+                </nz-badge>
+            </ng-template>
+            <ng-container *ngIf="objFilter.status == FOOTBALL_FIELD_STATUS.BAO_TRI">
+                <div class="table-responsive">
+                    <footballField-table [total]="objFilter.total" [loading]="loading" (delete)="deleteFootballField($event)" (addOrEdit)="addOrEditModal($event, false, true)" (viewDetail)="viewDetails($event)" (onChange)="onChangeQuery($event)" [listData]="listFootballField"></footballField-table>
+                </div>
+            </ng-container>
+        </nz-tab>
+        <nz-tab [nzTitle]="titleTemplate1">
+            <ng-template #titleTemplate1>
+                <nz-badge style="margin-right: 8px;" [nzCount]="countSanHoatDong ? countSanHoatDong : 0" nzShowZero [nzStyle]="{ backgroundColor: '#52c41a' }">
+                    <span style="padding-right: 16px;">Sân hoạt động</span>
+                </nz-badge>
+            </ng-template>
+            <ng-container *ngIf="objFilter.status == FOOTBALL_FIELD_STATUS.HOAT_DONG">
+                <div class="table-responsive">
+                    <footballField-table [total]="objFilter.total" [loading]="loading" (delete)="deleteFootballField($event)" (addOrEdit)="addOrEditModal($event, false, true)" (viewDetail)="viewDetails($event)" (onChange)="onChangeQuery($event)" [listData]="listFootballField"></footballField-table>
+                </div>
+            </ng-container>
+        </nz-tab>
+        <nz-tab [nzTitle]="titleTemplate2">
+            <ng-template #titleTemplate2>
+                <nz-badge style="margin-right: 8px;" [nzCount]="countSanDungHoatDong ? countSanDungHoatDong : 0" nzShowZero>
+                    <span style="padding-right: 16px;">Dừng hoạt động</span>
+                </nz-badge>
+            </ng-template>
+            <ng-container *ngIf="objFilter.status == FOOTBALL_FIELD_STATUS.DUNG_HOAT_DONG">
+                <div class="table-responsive">
+                    <footballField-table [total]="objFilter.total" [loading]="loading" (delete)="deleteFootballField($event)" (addOrEdit)="addOrEditModal($event, false, true)" (viewDetail)="viewDetails($event)" (onChange)="onChangeQuery($event)" [listData]="listFootballField"></footballField-table>
+                </div>
+            </ng-container>
+        </nz-tab>
+    </nz-tabset>
+</div>

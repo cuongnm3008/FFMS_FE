@@ -1,0 +1,128 @@
+<div id="orderDetailView">
+    <h3 class="mb-4 text-gray-800 text-hover-primary fw-bolder text-uppercase text-center">Hoá đơn: {{dataItem.codeOrder}}</h3>
+    <hr>
+    <div>
+        <h5 class="mb-5 mt-5 text-gray-800  fw-bolder text-uppercase">1.Thông tin khách</h5>
+    </div>
+    <div class="header-info-mask">
+        <div class="header-info d-flex justify-content-between">
+            <div class="field">
+                <span class="value-label">Tên khách hàng</span>
+                <ng-container *ngIf="bookingDto; else other">
+                    <span class="value">
+                    <span>{{ bookingDto?.customer?.fullName ? bookingDto?.customer?.fullName :"Khách lạ"}}</span><br>
+                    <!-- <span>SĐT: {{bookingDto?.customer?.phone}}</span> -->
+                    </span>
+                </ng-container>
+                <ng-template #other>
+                    <!-- {{dataItem.customerName ? dataItem.customerName : "Khách lạ"}} -->
+                    Khách lạ
+                </ng-template>
+            </div>
+            <div class="field">
+                <span class="value-label">Thời gian giao dịch</span>
+                <span class="value">{{dataItem.orderDate | date: 'dd/MM/yyyy'}}</span>
+            </div>
+            <div class="field">
+                <span class="value-label">Hình thức thanh toán</span>
+                <span class="value">{{ dataItem.paymentName ? dataItem.paymentName :"N/A"}}</span>
+            </div>
+            <div class="field">
+                <span class="value-label">Tên nhân viên</span>
+                <span class="value">{{ dataItem.employeeName ? dataItem.employeeName :"N/A"}}</span>
+            </div>
+            <div class="field">
+                <span class="value-label">Giảm giá</span>
+                <span class="value">{{ dataItem.discount ? dataItem.discount :" 0 "}} %</span>
+            </div>
+            <div class="field">
+                <span class="value-label">Tổng tiền</span>
+                <span class="value">{{ dataItem.totalPrice | mask: 'separator.0':',' }} VNĐ</span>
+            </div>
+        </div>
+        <div class="w-100 header-info">
+            <ng-container *ngIf="bookingDto">
+                <div class="field">
+                    <span class="value-label">SĐT khách</span>
+                    <span class="value">
+                        <span>{{bookingDto?.customer?.phone}}</span>
+                    </span>
+                </div>
+                <div class="field">
+                    <span class="value-label">Tên sân bóng</span>
+                    <span class="value">{{ bookingDto.footballName}}</span>
+                </div>
+                <div class="field">
+                    <span class="value-label">Ca đá</span>
+                    <span class="value text-center">{{ bookingDto.slot}}</span>
+                </div>
+                <div class="field">
+                    <span class="value-label">Tiền sân</span>
+                    <span class="value text-center">{{ bookingDto.price  | mask: 'separator.0':',' }} VNĐ</span>
+                </div>
+            </ng-container>
+            <div class="field">
+                <span class="value-label">Ghi chú</span>
+                <span class="value">{{ dataItem.description ? dataItem.description :"N/A"}}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- end header-info-mask -->
+    <div class="line-listing-wrapper">
+        <h5 class="mb-5 mt-5 text-gray-800  fw-bolder text-uppercase">2.Danh sách sản phẩm</h5>
+        <ng-container *ngIf="lstItem?.length > 0; else other_content">
+            <p class="mb-5 mt-5 ">
+                <span class="text-warning fw-bolder text-gray-800">Chú ý: </span>
+                <span>Thông tin lấy hàng được lấy theo <span class="fw-bolder text-gray-800">(Mã nhập hàng_Mã sản phẩm)</span> </span>
+            </p>
+            <table class="table">
+                <thead class="ant-table-thead">
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th>Tên sản phẩm</th>
+                        <th class="text-center">Hàng cần lấy</th>
+                        <th class="text-center">Số lượng cần lấy</th>
+                        <th class="text-center">Hàng thay đổi</th>
+                        <th class="text-center">Số lượng thực tế</th>
+                        <th class="text-center">Giá bán</th>
+                        <th class="text-center">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of lstItem; index as index">
+                        <td class="text-center">{{index + 1}}</td>
+                        <td>{{item.productName}}</td>
+                        <td>
+                            <ng-container *ngFor="let package of item?.lstProductImportHistories; index as index1">
+                                <span>{{package?.importCouponCode}}_{{item.productCode}}</span>
+                                <span class="ms-2 fw-bold">SL: {{item.amount}}</span>
+                            </ng-container>
+                        </td>
+                        <td class="text-center"><span>{{item.amount}}</span></td>
+                        <td>
+                            <ng-container *ngIf="item?.lstChangeProductImportHistories">
+                                <ng-container *ngFor="let package of item?.lstChangeProductImportHistories; index as index1">
+                                    <span>{{package?.importCouponCode}}_{{item.productCode}}</span>
+                                    <span class="ms-2 fw-bold">SL: {{item.amount}}</span>
+                                </ng-container>
+                            </ng-container>
+                        </td>
+                        <td class="text-center"><span>{{item.amount}}</span></td>
+                        <td class="text-center">{{item.price | mask: 'separator.0':','}} VNĐ</td>
+                        <td class="text-center"><span>{{item.price*item.amount | mask: 'separator.0':','}} VNĐ</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </ng-container>
+        <ng-template #other_content>
+            <div class="mt-5">
+                <h3>Đơn hàng không kèm sản phẩm</h3>
+            </div>
+        </ng-template>
+    </div>
+
+</div>
+<ng-template [nzModalFooter]>
+    <button (click)="close()" class="btn btn-sm btn-secondary"><i class="fas fa-times"></i> Đóng</button>
+</ng-template>

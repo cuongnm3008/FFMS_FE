@@ -1,0 +1,10 @@
+<div *ngIf="type === 'base64'" id="formViewsPDF" style="width: 100%;" [style.height]="height"></div>
+
+<iframe *ngIf="type === 'url'" [src]="urlFile | safe" style="width: 100%;" [style.height]="height"></iframe>
+
+<div *ngIf="!value || !type" class="d-flex flex-center flex-column p-20">
+    <div class="symbol symbol-65px mb-5">
+        <img src="./assets/media/png/error.png" alt="image">
+    </div>
+    <a class="fs-4 text-gray-800 text-hover-primary fw-bolder mb-0">Không tìm thấy dữ liệu</a>
+</div>

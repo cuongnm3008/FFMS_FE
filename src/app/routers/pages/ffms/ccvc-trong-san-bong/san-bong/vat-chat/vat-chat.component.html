@@ -1,0 +1,72 @@
+<div id="modalThongTinCCVC">
+    <div class="mb-5">
+        <label class="form-label fw-bolder">Tên vật chất<span *ngIf="!isView" class="text-red"> (*)</span></label>
+        <!-- <input class="form-control" [(ngModel)]="dataItem.name" placeholder="Nhập tên vật chất" [disabled]="isView" /> -->
+        <input class="form-control" [(ngModel)]="dataItem.name" placeholder="Nhập tên vật chất" (ngModelChange)="validateHandleName()" [disabled]="isView" />
+        <span *ngIf="validaorRes" class="form-control-feedback custom-error-validate" style="display: inline; color: red;">{{validaorRes}}</span>
+        <validation-custom [nameField]="'Tên vật chất'" [sModel]="dataItem.name"></validation-custom>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Chi phí Lắp đặt (VNĐ)<span *ngIf="!isView" class="text-red"> (*)</span></label>
+            <input *ngIf="isView" class="form-control" [ngModel]="dataItem.price ? dataItem.price: '0'" [disabled]="isView" mask="separator.0" thousandSeparator="," />
+            <input *ngIf="!isView" class="form-control" [(ngModel)]="dataItem.price" placeholder="Nhập chi phí lắp đặt" mask="separator.0" thousandSeparator="," [disabled]="isView" />
+            <validation-custom [nameField]="'Chi phí Lắp đặt'" [sModel]="dataItem.price"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Kích thước (Mét)<span *ngIf="!isView" class="text-red"> (*)</span></label>
+            <input *ngIf="isView" class="form-control" [ngModel]="dataItem.size ? dataItem.size :'0'" [disabled]="isView" />
+            <input *ngIf="!isView" class="form-control" [(ngModel)]="dataItem.size" placeholder="Nhập kích thước" [disabled]="isView" />
+            <validation-custom [nameField]="'Kích thước'" [sModel]="dataItem.size"></validation-custom>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Thời gian lắp đặt<span *ngIf="!isView" class="text-red"> (*)</span></label>
+            <input *ngIf="isView" class="form-control" [ngModel]="dataItem.installationTime | date: 'dd/MM/yyyy' " [disabled]="isView" />
+            <date-picker *ngIf="!isView" [(sModel)]="dataItem.installationTime" (onDateChange)="dataItem.installationTime = $event" [isDisabled]="isView" placeholder=" dd-mm-yyyy"></date-picker>
+            <validation-custom [nameField]="'Thời gian lắp đặt'" [sModel]="dataItem.installationTime"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Số lượng<span *ngIf="!isView" class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.amount" placeholder="Nhập số lượng" [disabled]="isView" mask="00" sMinlength="1" sMaxlength="3" />
+            <validation-custom [nameField]="'Số lượng'" [sModel]="dataItem.amount"></validation-custom>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Trạng thái chất lương<span *ngIf="!isView" class="text-red"> (*)</span></label>
+            <input *ngIf="isView" class="form-control" [ngModel]="statusView" [disabled]="isView" />
+            <app-combobox *ngIf="!isView" [datas]="lstStatus" [(sModel)]="dataItem.status"></app-combobox>
+            <validation-custom *ngIf="!isView" [nameField]="'Trạng thái chất lương'" [sModel]="dataItem.status"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label for=""></label>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-5">
+                <label nz-checkbox [ngModel]="dataItem.isSpecific == '1' ? true : false " (change)="checkboxHandle($event)">Vật chất đặc biệt</label>
+            </div>
+        </div>
+        <!-- <label class="form-label fw-bolder">Tải ảnh vật chất </label>
+        <upload-image (urlImage)="dataItem.image = $event" [fileList]="fileList"></upload-image>
+    </div> -->
+
+        <!-- <check-box title="Vật chất đặc biệt " [(sModel)]="dataItem.isSpecific" (onValueChange)="dataItem.isSpecific = $event"></check-box> -->
+        <!-- <validation-custom [sModel]="dataItem.isSpecific"></validation-custom> -->
+
+        <ng-template [nzModalFooter]>
+            <button *ngIf="!isView && !isEdit" (click)="save()" class="btn btn-sm btn-primary" style="margin-right: 10px;">
+          <i class="fa fa-save"></i>
+          Lưu
+        </button>
+            <button *ngIf="!isView && isEdit" (click)="update()" class="btn btn-sm btn-primary" style="margin-right: 10px;">
+          <i class="fa fa-save"></i>
+          Cập Nhật
+        </button>
+            <!-- <button *ngIf="isView && isEdit" (click)="update()" class="btn btn-sm btn-primary" style="margin-right: 10px;">
+          <i class="fa fa-save"></i>
+          Bảo trì
+        </button> -->
+            <button (click)="close()" class="btn btn-sm btn-secondary"><i class="fas fa-times"></i> Đóng</button>
+        </ng-template>

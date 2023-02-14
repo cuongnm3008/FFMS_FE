@@ -1,0 +1,58 @@
+<div id="booking-history-model">
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Tên khách hàng</label>
+            <input class="form-control" [ngModel]="dataItem.customer.fullName" [disabled]="true" />
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Số điện thoại  </label>
+            <input class="form-control" [ngModel]="dataItem.customer.phone" [disabled]="true" mask="0000 000 000" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Tên sân bóng</label>
+            <input class="form-control" [ngModel]="dataItem.footballField.name" [disabled]="true" />
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Giá sân(VNĐ)</label>
+            <input class="form-control" [ngModel]="dataItem.footballField.price | mask: 'separator.0':','" [disabled]="true" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Ngày đặt lịch</label>
+            <input class="form-control" [ngModel]="dataItem.datePicker | date: 'dd/MM/yyyy, hh:mm'" [disabled]="true" />
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Ca đặt lịch</label>
+            <input class="form-control" [ngModel]="dataItem.slot" [disabled]="true" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Tiền cọc (VNĐ)</label>
+            <input class="form-control" [ngModel]="dataItem.deposit | mask: 'separator.0':','" [disabled]="true" />
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Hoàn tiền (VNĐ)</label>
+            <input *ngIf="!dataItem.returnPrice" class="form-control" [ngModel]="0" [disabled]="true" />
+            <input *ngIf="dataItem.returnPrice" class="form-control" [ngModel]="dataItem.returnPrice | mask: 'separator.0':','" [disabled]="true" />
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Ngày huỷ lịch</label>
+            <input *ngIf="dataItem.cancelDate" class="form-control" [ngModel]="dataItem.cancelDate | date: 'dd/MM/yyyy, hh:mm'" [disabled]="true" />
+            <input *ngIf="!dataItem.cancelDate" class="form-control" [ngModel]="dataItem.cancelDate | date: 'dd/MM/yyyy, hh:mm'" [disabled]="true" />
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Tình trạng</label>
+            <input class="form-control" [ngModel]="this.status" [disabled]="true" />
+        </div>
+    </div>
+
+    <ng-template [nzModalFooter]>
+        <button (click)="close()" class="btn btn-sm btn-secondary"><i class="fas fa-times"></i> Đóng</button>
+    </ng-template>

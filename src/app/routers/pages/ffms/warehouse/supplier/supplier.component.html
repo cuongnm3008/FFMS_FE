@@ -1,0 +1,46 @@
+<div ngProjectAs="card-body">
+    <div enterKey (enterKeyEvent)="fetchData()">
+        <nz-tabset nzType="card">
+            <nz-tab nzTitle="Tìm kiếm nâng cao">
+                <div class="row">
+                    <div class="mb-4 col-md-3">
+                        <label class="form-label fw-bolder" style="font-size: 15px;">Tên nhà cung cấp</label>
+                        <input [(ngModel)]="this.objFilter.name" type="text" class="form-control" placeholder="Nhập tên nhà cung cấp">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label class="form-label fw-bolder" style="font-size: 15px;">Số điện thoại</label>
+                        <input [(ngModel)]="this.objFilter.phone" type="text" class="form-control" placeholder="Nhập số điện thoại">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label class="form-label fw-bolder" style="font-size: 15px;">Email</label>
+                        <input [(ngModel)]="this.objFilter.email" type="text" class="form-control" placeholder="Nhập email">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label class="form-label fw-bolder" style="font-size: 15px;">Địa chỉ</label>
+                        <input [(ngModel)]="this.objFilter.address" type="text" class="form-control" placeholder="Nhập địa chỉ">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Tình trạng</label>
+                        <app-combobox [(sModel)]="this.objFilter.status" [datas]="lstStatus"></app-combobox>
+                    </div>
+                    <div class="mb-4 col-md-3 mt-8">
+                        <button (click)="fetchData()" class="btn btn-sm btn-primary me-1">
+                            <i class="fas fa-search"></i> Tìm kiếm
+                            </button>
+                        <button (click)="initFilter()" class="btn btn-sm btn-secondary ms-1">
+                            <i class="fas fa-sync"></i> Đặt lại
+                            </button>
+                    </div>
+                </div>
+            </nz-tab>
+            <nz-tab nzTitle="Tìm kiếm nhanh">
+                <div class="mb-4">
+                    <input id="search" [(ngModel)]="objFilter.textSearch" (ngModelChange)="searchHandle()" placeholder="Nhập tên, email, số điện thoại để tìm kiếm..." autoFocus class="form-control" type="text" />
+                </div>
+            </nz-tab>
+        </nz-tabset>
+    </div>
+    <div class="table-responsive">
+        <supplier-table [listData]="listSupplilers" (onChange)="onChangeQuery($event)" [total]="objFilter.total" [loading]="loading" (addOrEdit)="addOrEditModal($event, false, true)" (view)="addOrEditModal($event,true)" (delete)="delete($event)"></supplier-table>
+    </div>
+</div>

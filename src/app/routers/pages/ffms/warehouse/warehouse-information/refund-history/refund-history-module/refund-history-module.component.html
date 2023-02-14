@@ -1,0 +1,46 @@
+<div id="modalReturnHistory">
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Mã nhập hàng </label>
+            <input class="form-control" [(ngModel)]="dataItem.importCouponCode" [disabled]="true" />
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Nhà cung cấp</label>
+            <input class="form-control" [(ngModel)]="dataItem.supplier" [disabled]="true" />
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Tên sản phẩm</label>
+            <input class="form-control" [(ngModel)]="dataItem.productName" [disabled]="true" />
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Số lượng</label>
+            <input class="form-control" [ngModel]="dataItem.amount" [disabled]="true" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Ngày đổi hàng<span class="text-red"></span></label>
+            <input class="form-control" [ngModel]="dataItem.importDate | date: 'dd/MM/yyyy'" [disabled]="true" />
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Tình trạng đổi trả<span class="text-red"></span></label>
+            <input class="form-control" [ngModel]="this.status" [disabled]="true" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Giá lô hàng cũ (VNĐ)</label>
+            <input class="form-control" [ngModel]="dataItem.price| mask: 'separator.0':','" [disabled]="true" />
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Mô tả tình trạng<span class="text-red"></span></label>
+            <input class="form-control" [ngModel]="dataItem.description ? dataItem.description : 'N/A'" [disabled]="true" />
+        </div>
+
+    </div>
+    <ng-template [nzModalFooter]>
+        <button (click)="close()" class="btn btn-sm btn-secondary"><i class="fas fa-times"></i> Đóng</button>
+    </ng-template>

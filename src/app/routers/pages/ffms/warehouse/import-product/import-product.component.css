@@ -1,0 +1,91 @@
+.wrapper-import {
+    height: 100%;
+}
+
+.wrapper-import .left .content {
+    background-color: #FFFFFF;
+    height: 100%;
+}
+
+.wrapper-import .left {
+    margin-right: 0px;
+    padding-right: 0px;
+}
+
+.wrapper-import .right .content {
+    background-color: #FFFFFF;
+    height: 100%;
+    padding: 15px;
+}
+
+.wrapper-import .right .content .item {
+    display: flex;
+    justify-content: space-between;
+}
+
+.wrapper-import .right .content .item label {
+    display: flex;
+    align-items: flex-end;
+}
+
+.inner-content {
+    background-color: none !important;
+}
+
+
+/* -----------------Custom input---------------  */
+
+
+/* .right .group {
+    position: relative;
+}
+
+.right input {
+    font-size: 14px;
+    padding: 10px 10px 10px 5px;
+    display: block;
+    width: 100%;
+    border: none;
+    text-align: center;
+    border-bottom: 1px solid #757575;
+}
+
+.right input:focus {
+    outline: none;
+}
+
+.right .bar {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.right .bar:before,
+.right .bar:after {
+    content: '';
+    height: 0.5px;
+    width: 0;
+    bottom: 1px;
+    position: absolute;
+    background: #38B332;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+}
+
+.right .bar:before {
+    left: 50%;
+}
+
+.right .bar:after {
+    right: 50%;
+}
+
+.right input:focus~.bar:before,
+.right input:focus~.bar:after {
+    width: 50%;
+}
+
+.right input:focus {
+    border-bottom: 1px solid #38B332;
+} */

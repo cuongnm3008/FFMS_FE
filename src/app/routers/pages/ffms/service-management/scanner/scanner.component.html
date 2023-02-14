@@ -1,0 +1,8 @@
+<ngx-scanner-qrcode (event)="response($event)" #action="scanner"></ngx-scanner-qrcode>
+
+<h1 *ngIf="content">Nội dung: {{content}}</h1>
+<h1 *ngIf="!content">⌛ Loading...</h1>
+
+<ng-template [nzModalFooter]>
+    <button (click)="close()" class="btn btn-sm btn-secondary"><i class="fas fa-times"></i> Đóng</button>
+</ng-template>

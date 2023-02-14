@@ -1,0 +1,76 @@
+<div id="modalFootballField">
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Tên sân bóng<span class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.name" placeholder="Nhập tên sân bóng" (ngModelChange)="validateHandleName()" />
+            <span *ngIf="validaorRes" class="form-control-feedback custom-error-validate" style="display: inline; color: red;">{{validaorRes}}</span>
+            <validation-custom [nameField]="'Tên sân bóng'" [sModel]="dataItem.name"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <!-- <label for="search" class="form-label fw-bolder">Chọn Cơ sở</label>
+            <foundation-get-id-combobox [(sModel)]="dataItem.foundationId"></foundation-get-id-combobox> -->
+            <label class="form-label fw-bolder">Kiểu sân<span class="text-red"> (*)</span></label>
+            <app-combobox [(sModel)]="dataItem.type" [datas]="listKieuSan"></app-combobox>
+            <validation-custom [nameField]="'Kiểu sân'" [sModel]="dataItem.type "></validation-custom>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Chiều cao (Mét)<span class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.heigth" placeholder="Chiều cao" />
+            <validation-custom [nameField]="'Chiều cao'" [sModel]="dataItem.heigth"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Chiều rộng (Mét)<span class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.width" placeholder="Chiều rộng" />
+            <validation-custom [nameField]="'Chiều rộng'" [sModel]="dataItem.width"></validation-custom>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Chiều dài (Mét)<span class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.length" placeholder="Chiều dài" />
+            <validation-custom [nameField]="'Chiều dài'" [sModel]="dataItem.length"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Giá sân (VNĐ)<span class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.price" placeholder="Chiều rộng" mask="separator.0" thousandSeparator="," />
+            <validation-custom [nameField]="'Giá sân'" [sModel]="dataItem.price"></validation-custom>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Ngày hoạt động<span class="text-red"> (*)</span></label>
+            <date-picker [(sModel)]="dataItem.startDate" (onDateChange)="dataItem.startDate = $event" placeholder=" dd-mm-yyyy"></date-picker>
+            <validation-custom [nameField]="'Ngày hoạt động'" [sModel]="dataItem.startDate"></validation-custom>
+
+        </div>
+        <div class="col-md-6 mb-5">
+            <label for="search" class="form-label fw-bolder">Trạng thái<span class="text-red"> (*)</span></label>
+            <app-combobox [(sModel)]="dataItem.status" [datas]="listTrangThaiSan">
+            </app-combobox>
+            <validation-custom [nameField]="'Trạng thái'" [sModel]="dataItem.status"></validation-custom>
+        </div>
+    </div>
+    <div class="mb-5 ">
+        <label class="form-label fw-bolder ">Ghi chú</label>
+        <textarea nz-input rows="3 " [(ngModel)]="dataItem.description " placeholder="Mô tả "></textarea>
+    </div>
+    <!-- <div class="row">
+        <div class="mb-5">
+            <label class="form-label fw-bolder">Mô tả</label>
+            <textarea class="form-control" rows="5" [(ngModel)]="dataItem.description" placeholder="Mô tả"></textarea>
+        </div>
+    </div> -->
+</div>
+<ng-template [nzModalFooter]>
+    <button *ngIf="!isView && !isEdit" (click)="save()" class="btn btn-sm btn-primary" style="margin-right: 10px;">
+          <i class="fa fa-save"></i>
+          Lưu
+        </button>
+    <button *ngIf="!isView && isEdit" (click)="update()" class="btn btn-sm btn-primary" style="margin-right: 10px;">
+          <i class="fa fa-save"></i>
+          Cập Nhật
+        </button>
+    <button (click)="close()" class="btn btn-sm btn-secondary"><i class="fas fa-times"></i> Đóng</button>
+</ng-template>

@@ -1,0 +1,166 @@
+<nz-spin [nzSpinning]="tableHelper.isLoading">
+    <ng-container [ngSwitch]="type">
+        <ng-container *ngSwitchCase="'custom'">
+
+            <ng-template #tableBodyTml>
+                <tbody [class]="classBody">
+                    <ng-container *ngFor="let dataItem of tableHelper.records; index as rowIndex">
+                        <tr class="odd">
+                            <td *ngFor="let column of columns; index as index" [style]="column.bodyStyle" [class]="column.bodyClass">
+                                <ng-container *ngIf="!column.tableCellTemplate; else noTableCellTemplate">
+                                    {{dataItem[column.field]}}
+                                </ng-container>
+                                <ng-template #noTableCellTemplate [ngTemplateOutlet]="column.tableCellTemplate" [ngTemplateOutletContext]="{rowIndex : rowIndex + (tableHelper.skipCount), dataItem : dataItem}">
+                                </ng-template>
+                            </td>
+                        </tr>
+
+                        <ng-container *ngIf="dataItem.isShowSub && dataItem.listSubData && dataItem.listSubData.length">
+                            <ng-container *ngFor="let itemSub of dataItem.listSubData">
+                                <tr class="odd" *ngIf="subColumns && subColumns.length">
+                                    <td *ngFor="let column of subColumns; index as index" [attr.colspan]="column.colspan" [style]="column.bodyStyle" [class]="column.bodyClass">
+                                        <ng-container *ngIf="!column.tableCellTemplate; else noTableCellTemplate">
+                                            {{itemSub[column.field]}}
+                                        </ng-container>
+                                        <ng-template #noTableCellTemplate [ngTemplateOutlet]="column.tableCellTemplate" [ngTemplateOutletContext]="{rowIndex : rowIndex + (tableHelper.skipCount), dataItem : itemSub}">
+                                        </ng-template>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+
+                    <tr *ngIf="!tableHelper.records?.length">
+                        <td [attr.colspan]="columns.length">
+                            <div class="d-flex flex-center flex-column pt-12 p-9">
+                                <div class="symbol symbol-65px mb-5">
+                                    <img src="./assets/media/png/error.png" alt="image">
+                                </div>
+                                <a class="fs-4 text-gray-800 text-hover-primary fw-bolder mb-0">Không tìm thấy dữ liệu</a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </ng-template>
+
+            <div class="table-responsive" [class]="class">
+                <div *ngIf="height > 0; else noHeightTpl" class="dataTables_scroll">
+                    <div class="dataTables_scrollHead" style="overflow: hidden; position: relative; border: 0px; width: 100%;">
+                        <div class="dataTables_scrollHeadInner" style="box-sizing: content-box; width: 100%; padding-right: 5px;">
+                            <table class="table align-middle table-row-dashed fs-6 gy-4 dataTable no-footer" style="margin-left: 0px; width: 100%; margin-top: 0px!important;">
+                                <thead>
+                                    <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                                        <th *ngFor="let column of columns" [style]="column.headerStyle" [class]="column.headerClass" [style.width]="column.width > 0 ? (column.width + 'px') : ''" [style.min-width]="column.width > 0 ? (column.width + 'px')  :column.minWidth > 0 ? (column.minWidth + 'px') : ''"
+                                            style="vertical-align: middle;">{{column.title}}</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="dataTables_scrollBody" style="position: relative; overflow: auto; width: 100%;" [style.height]="height > 0 ? (height + 'px') : null">
+                        <table class="table align-middle table-row-dashed fs-6 gy-3 dataTable no-footer" style="width: 100%;">
+                            <thead>
+                                <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0" style="height: 0px;">
+                                    <th *ngFor="let column of columns" [style]="column.headerStyle" [class]="column.headerClass" [style.width]="column.width > 0 ? (column.width + 'px') : ''" [style.min-width]="column.width > 0 ? (column.width + 'px')  :column.minWidth > 0 ? (column.minWidth + 'px') : ''"
+                                        style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px;">
+                                        <div class="dataTables_sizing" style="height: 0px; overflow: hidden;">{{column.title}}</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <ng-container [ngTemplateOutlet]="tableBodyTml"></ng-container>
+                        </table>
+                    </div>
+                </div>
+
+                <ng-template #noHeightTpl>
+                    <table class="table align-middle table-row-dashed fs-6 gy-5 dataTable no-footer">
+                        <thead>
+                            <tr class="text-start text-gray-400 fw-bolder fs-7 text-uppercase gs-0">
+                                <th *ngFor="let column of columns" [style]="column.headerStyle" [class]="column.headerClass" [style.width]="column.width > 0 ? (column.width + 'px') : ''" [style.min-width]="column.width > 0 ? (column.width + 'px')  :column.minWidth > 0 ? (column.minWidth + 'px') : ''"
+                                    style="vertical-align: middle;">{{column.title}}</th>
+                            </tr>
+                        </thead>
+                        <ng-container [ngTemplateOutlet]="tableBodyTml"></ng-container>
+                    </table>
+                </ng-template>
+            </div>
+            <p-paginator *ngIf="tableHelper.defaultRecordsCountPerPage < tableHelper.totalRecordsCount" class="custom" [rows]="tableHelper.defaultRecordsCountPerPage" [totalRecords]="tableHelper.totalRecordsCount" (onPageChange)="getDataGrids.emit($event)" [pageLinkSize]="pageLinkSize"></p-paginator>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+            <div class="primeng-datatable-container">
+                <p-table #dataTable [lazy]="true" (onLazyLoad)="getDataGrids.emit($event)" [value]="tableHelper.records" [rows]="tableHelper.defaultRecordsCountPerPage" responsiveLayout="scroll" [showCurrentPageReport]="true" [totalRecords]="tableHelper.totalRecordsCount"
+                    [resizableColumns]="tableHelper.resizableColumns" columnResizeMode="expand" [rowHover]="true" [(first)]="tableHelper.currentPage" [rowsPerPageOptions]="tableHelper.predefinedRecordsCountPerPage" [paginator]="true" [currentPageReportTemplate]="tableHelper.currentPageReportTemplate"
+                    [scrollable]="tableHelper.scrollable" [scrollHeight]="height > 0 ? (height + 'px') : '' " styleClass="p-datatable-gridlines">
+                    <ng-template pTemplate="colgroup">
+                        <colgroup>
+                            <col *ngFor="let column of columns" [style.width]="column.width > 0 ? (column.width + 'px') : ''" [style.min-width]="column.width > 0 ? (column.width + 'px') : ''">
+                        </colgroup>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr *ngIf="!(columnGroups && columnGroups.length > 0);else columnGroupsTemplate">
+                            <ng-container *ngFor="let column of columns">
+                                <th *ngIf="!(column.field && column.isSort)" pResizableColumn [style]="column.headerStyle" [class]="column.headerClass">
+                                    {{column.title}}
+                                </th>
+                                <th *ngIf="column.field && column.isSort" pResizableColumn [style]="column.headerStyle" [class]="column.headerClass" [pSortableColumn]="column.field">
+                                    {{column.title}}
+                                    <p-sortIcon [field]="column.field"></p-sortIcon>
+                                </th>
+                            </ng-container>
+                        </tr>
+                        <ng-template #columnGroupsTemplate>
+                            <tr>
+                                <ng-container *ngFor="let column of columns">
+                                    <ng-container *ngIf="column.groupDto && column.groupDto.isShowColumnTop">
+                                        <th *ngIf="!(column.field && column.groupDto.isSort)" pResizableColumn [attr.colspan]="column.groupDto.colSpan" [attr.rowSpan]="column.groupDto.rowSpan" [style]="column.groupDto.headerStyle" [class]="column.groupDto.headerClass">
+                                            {{column.groupDto.title}}
+                                        </th>
+                                        <th *ngIf="column.field && column.groupDto.isSort" pResizableColumn [attr.colspan]="column.groupDto.colSpan" [attr.rowSpan]="column.groupDto.rowSpan" [style]="column.groupDto.headerStyle" [class]="column.groupDto.headerClass" [pSortableColumn]="column.field">
+                                            {{column.groupDto.title}}
+                                            <p-sortIcon [field]="column.field"></p-sortIcon>
+                                        </th>
+                                    </ng-container>
+                                </ng-container>
+                            </tr>
+                            <tr>
+                                <ng-container *ngFor="let column of columns">
+                                    <ng-container *ngIf="column.groupDto && column.groupDto.isShowColumnBottom">
+                                        <th *ngIf="!(column.field && column.isSort)" pResizableColumn [style]="column.headerStyle" [class]="column.headerClass">
+                                            {{column.title}}
+                                        </th>
+                                        <th *ngIf="column.field && column.isSort" pResizableColumn [style]="column.headerStyle" [class]="column.headerClass" [pSortableColumn]="column.field">
+                                            {{column.title}}
+                                            <p-sortIcon [field]="column.field"></p-sortIcon>
+                                        </th>
+                                    </ng-container>
+                                </ng-container>
+                            </tr>
+                        </ng-template>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-dataItem="$implicit" let-rowIndex="rowIndex">
+                        <tr>
+                            <td *ngFor="let column of columns;index as index" [style]="column.bodyStyle" [class]="column.bodyClass">
+                                <ng-container *ngIf="!column.tableCellTemplate; else noTableCellTemplate">
+                                    {{dataItem[column.field]}}
+                                </ng-container>
+                                <ng-template #noTableCellTemplate [ngTemplateOutlet]="column.tableCellTemplate" [ngTemplateOutletContext]="{rowIndex : rowIndex, dataItem : dataItem}">
+                                </ng-template>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage" *ngIf="height < 10000">
+                        <tr style="background: none;">
+                            <td colspan="10" style="border: none;">
+                                <h4 class="text-center" style="padding: 191px 0px;color: #adadad;">
+                                    <i class="fas fa-exclamation-circle" style="font-size: 50px;padding-bottom: 10px;"></i>
+                                    <br>
+                                    <span class="bold">Không có dữ liệu</span>
+                                </h4>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </ng-container>
+    </ng-container>
+</nz-spin>

@@ -1,0 +1,45 @@
+<div class="container">
+    <div id="logo">
+        <h1 class="logo">{{dataItem.name}}&nbsp;
+            <div ngProjectAs="card-toolbar">
+                <a (click)="addOrEditModal($event)" href="javascript:;" class="btn btn-sm btn-primary">
+                    <i class="fas fa-edit"></i> Sửa thông tin
+                </a>
+            </div>
+            <!-- <div ngProjectAs="card-toolbar">
+                <a (click)=" addOrEditModal() " href="javascript" class="btn btn-sm btn-primary">
+                    <i style="color: #82CD47;" nzTooltipTitle="Sửa cở sở" nz-tooltip class="fas fa-edit p-2"></i>
+                </a>
+            </div> -->
+        </h1>
+        <div class="CTA">
+            <i (click)="getFootball()" style="color: #ffffff;" nzTooltipTitle="Vào sân bóng" nz-tooltip class=" text-center fs-5">Sân bóng</i>
+        </div>
+    </div>
+    <div class="leftbox">
+        <nav>
+            <!-- <a id="profile" class="active"><i class="fa fa-user"></i></a>
+            <a id="payment"><i class="fa fa-credit-card"></i></a>
+            <a id="subscription"><i class="fa fa-tv"></i></a>
+            <a id="privacy"><i class="fa fa-tasks"></i></a>
+            <a id="settings"><i class="fa fa-cog"></i></a> -->
+        </nav>
+    </div>
+    <div class="rightbox">
+        <div class="profile">
+            <h1 class="title-">THÔNG TIN CƠ SỞ KINH DOANH</h1>
+            <h2 class="label">MÃ CƠ SỞ</h2>
+            <p class="text-center"> {{dataItem.foundationCode}} <button class="btn"></button></p>
+            <h2 class="label">NGÀY HOẠT ĐỘNG</h2>
+            <p class="text-center"> {{dataItem.startDate | date: 'dd/MM/yyyy'}}</p>
+            <!-- <p class="text-center"> {{dataItem.address.addressDetail}}, {{percentName[0].name}}, {{districtName[0].name}}, {{provineName[0].name}}</p> -->
+            <h2 class="label">SÂN BÓNG TRỤC TRẶC </h2>
+            <p class="text-center"> {{soSanTrucTrac}} <button class="btn"></button></p>
+            <h2 class="label">TỔNG SỐ SÂN BÓNG</h2>
+            <p class="text-center"> {{tongSoSanBong}} <button class="btn"></button></p>
+            <h2 class="label">ĐỊA CHỈ </h2>
+            <p class="text-center"> {{dataItem.description}} <button class="btn"></button></p>
+        </div>
+
+    </div>
+</div>

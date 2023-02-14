@@ -1,0 +1,120 @@
+<div id="importProduct" class="wrapper-import row">
+    <div class="left col-md-8">
+        <div class="content table-responsive p-2">
+            <div class="mb-3">
+                <label class="fs-5 title fw-bolder">Chọn sản phẩm nhập hàng</label>
+                <!-- <product-combobox [(sModel)]="productId" (sModelChange)="modelChangeHangle($event)" [sPlaceHolder]="'Nhập tên, mã sản phẩm để tìm kiếm...'"></product-combobox> -->
+                <custom-autocomplete (productIdChange)="modelChangeHangle($event)" [(sModel)]="productId"></custom-autocomplete>
+            </div>
+            <div *ngIf="listProduct && listProduct.length > 0; else noData">
+                <nz-table #fixedTable [nzScroll]="{ x: '1500px'}" nzShowSizeChanger [nzData]="listProduct" [nzFrontPagination]="false" [nzLoading]="loading" [nzTotal]="total" [nzPageSize]="pageSize" [nzPageIndex]="pageIndex" (nzQueryParams)="onQueryParamsChange($event)"
+                    [nzShowTotal]="totalTemplate">
+                    <thead>
+                        <tr>
+                            <th nzLeft class="w-50px text-center">#</th>
+                            <th nzLeft class="min-w-100px text-center">Sản phẩm</th>
+                            <th class="min-w-150px text-center">Thương hiệu</th>
+                            <th class="min-w-100px text-center">Giá nhập</th>
+                            <th class="min-w-125px text-center">Số lượng</th>
+                            <th class="min-w-125px text-center">Đơn giá</th>
+                            <th class="min-w-150px text-center">Ngày sản xuất</th>
+                            <th class="min-w-150px text-center">Ngày hết hạn</th>
+                            <th nzRight class="w-100px text-center">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of listProduct; index as index">
+                            <td nzLeft class="text-center"> {{pageIndex * pageSize + index + 1}}</td>
+                            <td nzLeft class="text-center"><span style="font-weight: 700;">{{item.product.productCode}}</span>-{{item.product.name}}</td>
+                            <td class="text-center">{{item.product.brand}}</td>
+                            <td class="text-center">
+                                <input class="form-control text-center" placeholder="Giá nhập" (change)="importPriceChange(item)" type="text" [(ngModel)]="item.price" mask="separator.0" thousandSeparator="," suffix=" đ">
+                            </td>
+                            <td class="text-center">
+                                <input class="form-control text-center" placeholder="Số lượng" (change)="amountChange(item)" type="text" [(ngModel)]="item.amount" mask="separator.0" thousandSeparator=",">
+                            </td>
+                            <td class="text-center">{{item.totalPrice | mask: 'separator.0':','}} đ</td>
+                            <td class="text-center">
+                                <nz-date-picker nzFormat="dd/MM/yyyy" class="w-100" nzPlaceHolder="Chọn ngày" [(ngModel)]="item.manufactureDate" (ngModelChange)="manufactureDateChange(item)"></nz-date-picker>
+                                <validation-custom nameField="Ngày sản xuất" [sModel]="item.manufactureDate"></validation-custom>
+                            </td>
+                            <td class="text-center">
+                                <ng-container *ngIf="item.categoryId == PRODUCT_CATEGORY.DO_AN">
+                                    <nz-date-picker nzFormat="dd/MM/yyyy" class="w-100" nzPlaceHolder="Chọn ngày" [(ngModel)]="item.expriredDate" (ngModelChange)="expiryDateChange(item)"></nz-date-picker>
+                                    <validation-custom nameField="Ngày hết hạn" [sModel]="item.expriredDate"></validation-custom>
+                                </ng-container>
+                            </td>
+                            <td nzRight class="text-center">
+                                <i style="color: #d9534f;" nzTooltipTitle="Xóa" (click)="deleteProduct(item)" nz-tooltip class="fas fa-trash-alt p-3"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+                <ng-template #totalTemplate let-total>
+                    <span>Tổng số bản ghi :</span> {{total}}
+                </ng-template>
+            </div>
+            <ng-template #noData>
+                <div class="d-flex flex-center flex-column pt-12 p-9">
+                    <div class="symbol symbol-65px mb-5">
+                        <img src="./assets/media/png/error.png" alt="image">
+                    </div>
+                    <span class="fs-5 text-gray-800  fw-bolder mb-0">Vui lòng nhập sản phẩm để nhập hàng</span>
+                </div>
+            </ng-template>
+            <!-- <import-product-table [(listData)]="listProduct" [loading]="false" (delete)="deleteProduct($event)"></import-product-table> -->
+        </div>
+    </div>
+    <div class="right col-md-4">
+        <div class="content">
+            <div class="item mb-5">
+                <label class="title fw-bolder">Cơ sở: </label>
+                <span class="fw-bolder">Cơ sở Đại Dương </span>
+                <!-- <foundation-get-id-combobox [(sModel)]="dataItem.foundationId" isDisabled="isDisabled"></foundation-get-id-combobox> -->
+            </div>
+            <div class="item mb-5">
+                <label class="title fw-bolder">Người nhập: </label>
+                <!-- <app-combobox [datas]="listEmployees" [(sModel)]="dataItem.importBy"></app-combobox> -->
+                <span class="fw-bolder">{{userDto.username}}</span>
+            </div>
+            <div class="mb-5">
+                <label class="form-label fw-bolder">Nhà cung cấp<span class="text-red"> (*)</span></label>
+                <app-combobox [datas]="listSupplilers" [(sModel)]="dataItem.supplierId"></app-combobox>
+                <validation-custom nameField="Nhà cung cấp" [sModel]="dataItem.supplierId"></validation-custom>
+            </div>
+            <div class="mb-5">
+                <label class="form-label fw-bolder">Ngày nhập hàng<span class="text-red"> (*)</span></label>
+                <date-picker [(sModel)]="dataItem.importDate" (onDateChange)="dataItem.importDate = $event"></date-picker>
+                <validation-custom nameField="Ngày nhập hàng" [sModel]="dataItem.importDate"></validation-custom>
+            </div>
+            <div class="item mb-5">
+                <label class="title form-label fw-bolder">Mã phiếu nhập<span class="text-red"> (*)</span></label>
+                <div>
+                    <input class="form-control text-center" [(ngModel)]="dataItem.importCouponCode" type="text" placeholder="Mã phiếu nhập hàng">
+                    <validation-custom nameField="Mã phiếu nhập hàng" [sModel]="dataItem.importCouponCode"></validation-custom>
+                </div>
+            </div>
+            <div class="item mb-5">
+                <label class="form-label form-label fw-bolder">Số lượng mặt hàng</label>
+                <div>
+                    <input class="form-control text-center" [(ngModel)]="dataItem.totalItem" type="text" mask="separator.0" thousandSeparator="," placeholder="Số lượng mặt hàng" [disabled]="true">
+                    <!-- <span class="bar"></span> -->
+                </div>
+            </div>
+            <div class="item mb-5">
+                <label class="form-label form-label fw-bolder">Tổng tiền hàng</label>
+                <div>
+                    <input class="form-control text-center" [(ngModel)]="dataItem.totalPrice" type="text" mask="separator.0" thousandSeparator="," placeholder="Tổng tiền hàng" suffix=" đ" [disabled]="true">
+                    <!-- <span class="bar"></span> -->
+                </div>
+            </div>
+            <div class="mb-5">
+                <label class="form-label fw-bolder">Ghi chú</label>
+                <textarea [(ngModel)]="dataItem.description" class="form-control" style="height: auto !important;" cols="3" placeholder="Mô tả"></textarea>
+            </div>
+            <a (click)="importProduct()" href="javascript:;" class="btn btn-sm btn-primary" style="width: 100%;">
+                <i class="fa fa-save"></i> Nhập hàng
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+nz-date-picker {
+    border-radius: 4px!important;
+    height: 40px!important;
+    padding: 4px 12px!important;
+}
+
+.ant-picker {
+    border-radius: 4px;
+    height: 40px!important;
+}

@@ -1,0 +1,55 @@
+/* You can add global styles to this file, and also import other style files */
+
+
+/* <link href="assets/metronic/plugins/custom/fullcalendar/fullcalendar.bundle.css" rel="stylesheet" type="text/css" /> */
+
+
+/* <link href="assets/metronic/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" /> */
+
+
+/* <link href="assets/metronic/plugins/custom/prismjs/prismjs.bundle.css" rel="stylesheet" type="text/css" /> */
+
+
+/* <link href="assets/metronic/css/style.bundle.css" rel="stylesheet" type="text/css" /> */
+
+
+/* <link href="assets/metronic/css/themes/layout/header/base/light.css" rel="stylesheet" type="text/css" /> */
+
+
+/* <link href="assets/metronic/css/themes/layout/header/menu/light.css" rel="stylesheet" type="text/css" /> */
+
+
+/* <link href="assets/metronic/css/themes/layout/brand/dark.css" rel="stylesheet" type="text/css" /> */
+
+
+/* <link href="assets/metronic/css/themes/layout/aside/dark.css" rel="stylesheet" type="text/css" /> */
+
+@import url("assets/metronic/plugins/custom/fullcalendar/fullcalendar.bundle.css");
+@import url("assets/metronic/plugins/global/plugins.bundle.css");
+@import url("assets/metronic/css/pages/login/login-1.css");
+@import url("assets/metronic/plugins/custom/prismjs/prismjs.bundle.css");
+@import url("assets/metronic/css/style.bundle.css");
+@import url("assets/metronic/css/themes/layout/header/base/light.css");
+@import url("assets/metronic/css/themes/layout/header/menu/light.css");
+@import url("assets/metronic/css/themes/layout/brand/dark.css");
+@import url("assets/metronic/css/themes/layout/aside/dark.css");
+@import url("assets/metronic/css/themes/layout/header/base/light.css");
+@import url("assets/metronic/css/themes/layout/header/menu/light.css");
+@import url("assets/metronic/css/themes/layout/brand/light.css");
+@import url("assets/metronic/css/themes/layout/aside/light.css");
+app-root {
+    height: 100%;
+}
+
+app-login {
+    height: 100%;
+}
+
+.d-flex.flex-column.flex-root {
+    height: 100%;
+}
+
+.ant-modal-body {
+    max-height: 500px !important;
+    overflow-y: auto;
+}

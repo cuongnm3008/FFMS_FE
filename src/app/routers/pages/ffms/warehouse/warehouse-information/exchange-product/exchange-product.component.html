@@ -1,0 +1,50 @@
+<div id="exchangeProduct">
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Sản phẩm</label>
+            <input class="form-control" [(ngModel)]="dataItem.product.productCode+'-'+dataItem.product.name" placeholder="Sản phẩm" disabled="true" />
+            <!-- <validation-custom nameField="Tên lô hàng" [sModel]="dataItem.product.name"></validation-custom> -->
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Ngày đổi hàng<span class="text-red"> (*)</span></label>
+            <!-- <date-picker [(sModel)]="dataItem.fromDate"></date-picker> -->
+            <date-picker [(sModel)]="dataItem.fromDate" (onDateChange)="dataItem.fromDate = $event" placeholder=" dd-mm-yyyy"></date-picker>
+            <!-- <validation-custom [nameField]="'Ngày đổi hàng'" [sModel]="dataItem.fromDate"></validation-custom> -->
+
+        </div>
+        <div class="col-md-6 mb-5">
+            <!-- {{dataItem.manufacturingDate}} -->
+            <label class="form-label fw-bolder">Ngày sản xuất<span class="text-red"> (*)</span></label>
+            <date-picker [(sModel)]="dataItem.manufactureDate" (onDateChange)="dataItem.manufactureDate = $event" placeholder=" dd-mm-yyyy"></date-picker>
+            <validation-custom [nameField]="'Ngày sản xuất'" [sModel]="dataItem.manufactureDate"></validation-custom>
+            <!-- <date-picker></date-picker> -->
+            <!-- <validation-custom nameField="Ngày sản xuất" [sModel]="dataItem.manufacturingDate"></validation-custom> -->
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Ngày hết hạn<span class="text-red"> (*)</span></label>
+            <date-picker [(sModel)]="dataItem.expriredDate" (onDateChange)="dataItem.expriredDate = $event" placeholder=" dd-mm-yyyy"></date-picker>
+            <validation-custom [nameField]="'Ngày hết hạn'" [sModel]="dataItem.expriredDate"></validation-custom>
+            <!-- <date-picker></date-picker> -->
+            <!-- <validation-custom nameField="Ngày hết hạn" [sModel]="dataItem.expiryDate"></validation-custom> -->
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Số lượng sản phẩm hiện tại <span class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.amount" placeholder="Số lượng" [disabled]="true" mask="separator.0" thousandSeparator="," [suffix]="' ' + dataItem.product.unitName" />
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Số lượng đổi trả <span class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="returnNumber" placeholder="Số lượng" mask="separator.0" thousandSeparator="," [suffix]="' ' + dataItem.product.unitName" />
+            <validation-custom nameField="Số lượng" [sModel]="returnNumber"></validation-custom>
+        </div>
+    </div>
+    <div>
+        <label class="form-label fw-bolder">Lý do đổi trả</label>
+        <textarea class="form-control" style="height: auto !important;" rows="3" [(ngModel)]="dataItem.description" placeholder="Lý do đổi trả"></textarea>
+        <!-- <validation-custom nameField="Số lượng" [sModel]="dataItem.description"></validation-custom> -->
+    </div>
+</div>
+<ng-template [nzModalFooter]>
+    <button (click)="save()" class="btn btn-sm btn-primary" style="margin-right: 10px;"><i class="fa fa-save"></i>
+Lưu</button>
+    <button (click)="close()" class="btn btn-sm btn-secondary"><i class="fas fa-times"></i> Đóng</button>
+</ng-template>

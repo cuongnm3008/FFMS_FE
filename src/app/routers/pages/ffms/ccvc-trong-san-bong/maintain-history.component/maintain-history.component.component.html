@@ -1,0 +1,38 @@
+<div ngProjectAs="card-body">
+    <div enterKey (enterKeyEvent)="fetchData()">
+        <nz-tabset nzType="card">
+            <nz-tab nzTitle="Tìm kiếm nâng cao">
+                <div class="row">
+                    <div class="mb-4 col-md-3">
+                        <label class="form-label fw-bolder" style="font-size: 15px;">Tên vật chất</label>
+                        <input [(ngModel)]="this.objFilter.name" type="text" class="form-control" placeholder="Nhập tên vật chất">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label class="form-label fw-bolder" style="font-size: 15px;">Tên sân bóng</label>
+                        <input [(ngModel)]="this.objFilter.footballFieldName" type="text" class="form-control" placeholder="Nhập tên sân bóng">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Thời gian xử lý hoàn thành</label>
+                        <range-picker [(sModelStart)]="objFilter.timeToStart" [(sModelEnd)]="objFilter.timeToEnd"></range-picker>
+                    </div>
+                    <div class="mb-4 col-md-3 mt-8">
+                        <button (click)="fetchData()" class="btn btn-sm btn-primary me-1">
+                            <i class="fas fa-search"></i> Tìm kiếm
+                            </button>
+                        <button (click)="initFilter()" class="btn btn-sm btn-secondary ms-1">
+                            <i class="fas fa-sync"></i> Đặt lại
+                            </button>
+                    </div>
+                </div>
+            </nz-tab>
+            <nz-tab nzTitle="Tìm kiếm nhanh">
+                <div class="mb-4">
+                    <input id="search" [(ngModel)]="objFilter.textSearch" (ngModelChange)="searchHandle()" placeholder="Nhập tên vật chất, tên sân bóng để tìm kiếm..." autoFocus class="form-control" type="text" />
+                </div>
+            </nz-tab>
+        </nz-tabset>
+    </div>
+    <div class="table-responsive">
+        <maintain-history-table [total]="objFilter.total" [listData]="lstMaintainHistory" [total]="objFilter.total" (onChange)="onChangeQuery($event)" (view)="addOrEditModal($event,true)" [loading]="loading"></maintain-history-table>
+    </div>
+</div>

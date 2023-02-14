@@ -1,0 +1,8 @@
+ .ant-modal-body {
+     max-height: 500px !important;
+     overflow-x: scroll;
+ }
+ /* .ant-modal-content.ng-tns-c49-216 {
+     max-height: 500px !important;
+     overflow-x: scroll;
+ } */

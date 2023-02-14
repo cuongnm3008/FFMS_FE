@@ -1,0 +1,47 @@
+<div id="modalMaintainHistory">
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Tên Vật chất </label>
+            <input class="form-control" [(ngModel)]="dataItem.name" [disabled]="true" />
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Tên sân bóng </label>
+            <input class="form-control" [(ngModel)]="dataItem.footballFieldName" [disabled]="true" />
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Số lượng bị hỏng </label>
+            <input class="form-control" [(ngModel)]="dataItem.amount" [disabled]="true" />
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Chi phí sửa chữa (VNĐ)</label>
+            <input class="form-control" [ngModel]="dataItem.price| mask: 'separator.0':','" [disabled]="true" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Thời gian xử lý bắt đầu<span class="text-red"></span></label>
+            <input class="form-control" [ngModel]="dataItem.timeToStart | date: 'dd/MM/yyyy'" [disabled]="true" />
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Thời gian xử lý kêt thúc<span class="text-red"></span></label>
+            <input class="form-control" [ngModel]="dataItem.timeToEnd | date: 'dd/MM/yyyy'" [disabled]="true" />
+
+            <!-- <date-picker [(sModel)]="dataItem.timeToEnd" (onDateChange)="dataItem.timeToEnd = $event" [isDisabled]="true" placeholder=" dd-mm-yyyy"></date-picker> -->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Mô tả tình trạng<span class="text-red"></span></label>
+            <input class="form-control" [(ngModel)]="dataItem.description" [disabled]="true" />
+        </div>
+        <!-- <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Email<span class="text-red"></span></label>
+            <input class="form-control" [(ngModel)]="dataItem.email" placeholder="Email" [disabled]="isView" />
+        </div> -->
+    </div>
+    <ng-template [nzModalFooter]>
+        <button (click)="close()" class="btn btn-sm btn-secondary"><i class="fas fa-times"></i> Đóng</button>
+    </ng-template>

@@ -1,0 +1,38 @@
+<div ngProjectAs="card-body">
+    <div enterKey (enterKeyEvent)="fetchData()">
+        <nz-tabset nzType="card">
+            <nz-tab nzTitle="Tìm kiếm nâng cao">
+                <div class="row">
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Mã cơ sở</label>
+                        <input class="form-control" type="text" [(ngModel)]="objFilter.foundationCode" placeholder="Nhập mã cơ sở">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Tên cơ sở</label>
+                        <input class="form-control" [(ngModel)]="objFilter.foundationName" type="text" class="form-control" placeholder="Nhập tên cơ sở">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Trạng thái </label>
+                        <app-combobox [datas]="listTrangThaiCoSo" [(sModel)]="objFilter.status"></app-combobox>
+                    </div>
+                    <div class="mb-4 col-md-3 mt-8">
+                        <button (click)="fetchData()" class="btn btn-sm btn-primary me-1">
+                            <i class="fas fa-search"></i> Tìm kiếm
+                            </button>
+                        <button (click)="initFilter()" class="btn btn-sm btn-secondary ms-1">
+                            <i class="fas fa-sync"></i> Đặt lại
+                            </button>
+                    </div>
+                </div>
+            </nz-tab>
+            <nz-tab nzTitle="Tìm kiếm nhanh">
+                <div class="mb-4">
+                    <input id="search" [(ngModel)]="objFilter.textSearch" (ngModelChange)="searchHandle()" placeholder="Nhập tên sân bóng,tình trạng sân mã sản phẩm để tìm kiếm..." autoFocus class="form-control" type="text" />
+                </div>
+            </nz-tab>
+        </nz-tabset>
+        <div class="table-responsive">
+            <foundation-table [total]="objFilter.total" [loading]="loading" (delete)="deleteFoundationField($event)" (addOrEditModal)="addOrEditModal($event)" (viewDetail)="ViewDetail($event)" (onChange)="onChangeQuery($event)" [listData]="listFoundation"></foundation-table>
+        </div>
+    </div>
+</div>

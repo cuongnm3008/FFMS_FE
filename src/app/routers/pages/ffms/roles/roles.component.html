@@ -1,0 +1,49 @@
+<div ngProjectAs="card-body">
+    <div enterKey (enterKeyEvent)="getDataGrids()" class="mb-5">
+        <nz-tabset nzType="card">
+            <nz-tab nzTitle="Tìm kiếm nâng cao">
+                <div class="row">
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Mã vai trò</label>
+                        <input class="form-control" nz-input type="text" [(ngModel)]="roleFilterData.roleCode" placeholder="Nhập mã vai trò">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Tên vai trò</label>
+                        <input class="form-control" nz-input type="text" [(ngModel)]="roleFilterData.roleName" placeholder="Nhập tên vai trò">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Trạng thái</label>
+                        <app-combobox [(sModel)]="roleFilterData.status" [datas]="lstStatus"></app-combobox>
+                    </div>
+                    <div class="mb-4 col-md-3 mt-8">
+                        <button (click)="getDataGrids()" class="btn btn-sm btn-primary me-1">
+                            <i class="fas fa-search"></i> Tìm kiếm
+                            </button>
+                        <button (click)="initFilter()" class="btn btn-sm btn-secondary ms-1">
+                            <i class="fas fa-sync"></i> Đặt lại
+                            </button>
+                    </div>
+
+                </div>
+            </nz-tab>
+            <nz-tab nzTitle="Tìm kiếm nhanh">
+                <div class="mb-4">
+                    <input id="search" [(ngModel)]="roleFilterData.textSearch" (ngModelChange)="searchHandle()" placeholder="Nhập tên vai trò, mã vai trò để tìm kiếm..." autoFocus class="form-control" type="text" />
+                </div>
+                <!-- <div class="row">
+                        <div class="col-md-12">
+                            <nz-input-group [nzSuffix]="suffixIconSearch">
+                                <input type="text" nz-input [(ngModel)]="roleFilterData.dataSearch" (keyup)="onChange($event)" placeholder="Nhập mã chức vụ, tên chức vụ để tìm kiếm..." />
+                            </nz-input-group>
+                            <ng-template #suffixIconSearch>
+                                <span nz-icon nzType="search" nzTheme="outline"></span>
+                            </ng-template>
+                        </div>
+                    </div> -->
+            </nz-tab>
+        </nz-tabset>
+    </div>
+    <div class="table-responsive">
+        <role-table [listOfRole]="lstroles" [total]="total" (onChange)="onChangeQuery($event)" [loading]="isLoading" (onDeleteOut)="delete($event)" (onEditOut)="edit($event)" (viewDetail)="view($event)"></role-table>
+    </div>
+</div>

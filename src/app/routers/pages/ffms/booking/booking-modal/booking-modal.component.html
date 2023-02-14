@@ -1,0 +1,94 @@
+<div id="modalBooking">
+    <div class="mb-5 row ">
+        <div class="col-md-8">
+            <div *ngIf="dataItem.status =='1'" class="fw-bold">
+                <label class="form-label fw-bold">Tình trạng ca đá: </label>
+                <span class="badge bagde-deposit">Đã cọc sân</span>
+            </div>
+            <div *ngIf="dataItem.status =='2'" class="fw-bold">
+                <label class="form-label fw-bold">Tình trạng ca đá: </label>
+                <span class="badge bagde-paid">Đã thanh toán</span>
+            </div>
+        </div>
+        <div class="col-md-4 d-flex justify-content-end">
+            <button *ngIf="formView == 'deposit'" (click)="payment()" class="btn btn-sm btn-primary" style="margin-right: 10px;">
+              <i class="fas fa-plus-circle"></i>
+           Tạo hóa đơn
+          </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Khách hàng<span class="text-red"> (*)</span></label>
+            <app-combobox [datas]="listCustomer" sPlaceHolder="Chọn khách hàng" (sModelChange)="customerChange($event)" [(sModel)]="dataItem.customer.id" [isDisabled]="isView"></app-combobox>
+            <validation-custom nameField="Khách hàng" [sModel]="dataItem.customer.id"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Ngày đặt lịch<span *ngIf="!type" class="text-red"> (*)</span></label>
+            <date-picker [(sModel)]="datePicker" [isDisabled]="isView||type"></date-picker>
+            <validation-custom nameField="Ngày đặt lịch" [sModel]="datePicker"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Sân bóng<span *ngIf="!type" class="text-red"> (*)</span></label>
+            <app-combobox [datas]="listFootballField" [(sModel)]="dataItem.footballFielDto.id" (sModelChange)="footballFieldChange($event)" [isDisabled]="isView||type"></app-combobox>
+            <span class="text-warning" *ngIf="message">{{message}}</span>
+            <validation-custom nameField="Sân bóng" [sModel]="dataItem.footballFielDto.id"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Ca đặt<span *ngIf="!type" class="text-red"> (*)</span></label>
+            <app-combobox [datas]="listSlot" [(sModel)]="dataItem.slotDto.id" (sModelChange)="slotChange($event)" [isDisabled]="isView||type"></app-combobox>
+            <validation-custom nameField="Ca đặt" [sModel]="dataItem.slotDto.id"></validation-custom>
+            <span *ngIf="slotMessage" style="color: red; font-size: 12px;">{{slotMessage}}</span>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Giá sân<span *ngIf="!type" class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.footballFielDto.price" placeholder="Giá sân" mask="separator.0" suffix=" vnđ" thousandSeparator="," [disabled]="true" />
+            <validation-custom nameField="Giá sân" [sModel]="dataItem.footballFielDto.price"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Tiền cọc<span class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.deposit" placeholder="Tiền cọc" mask="separator.0" thousandSeparator="," suffix=" vnđ" [disabled]="isView" />
+            <validation-custom nameField="Tiền cọc" [sModel]="dataItem.deposit"></validation-custom>
+            <span *ngIf="dataItem.deposit > dataItem.footballFielDto.price" class="form-control-feedback custom-error-validate" style="display: inline; color: red;">Tiền cọc không được lớn hơn tiền sân</span>
+        </div>
+        <div *ngIf="formView=='formCancel'" class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Tiền hoàn trả<span class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.returnPrice" placeholder="Tiền hoàn trả" mask="separator.0" suffix=" vnđ" housandSeparator="," />
+            <validation-custom sType="number" nameField="Tiền hoàn trả" [sModel]="dataItem.returnPrice"></validation-custom>
+        </div>
+        <div *ngIf="formView=='formCancel'" class="mb-5">
+            <label class="form-label fw-bolder">Lý do hủy sân<span class="text-red"> (*)</span></label>
+            <textarea [(ngModel)]="dataItem.reasonCancel" class="form-control" style="height: auto !important;" cols="3" placeholder="Mô tả"></textarea>
+            <validation-custom nameField="Lý do hủy sân" [sModel]="dataItem.reasonCancel"></validation-custom>
+        </div>
+        <div *ngIf="formView=='formCancel'" class="mb-5">
+            <label class="form-label fw-bolder">Mô tả</label>
+            <textarea [(ngModel)]="dataItem.description" class="form-control" style="height: auto !important;" cols="3" placeholder="Mô tả" [disabled]="isView"></textarea>
+        </div>
+    </div>
+    <ng-template [nzModalFooter]>
+        <div class="d-flex justify-content-between">
+            <div>
+                <button *ngIf="formView == 'deposit'" (click)="formView='formCancel'" class="btn btn-sm btn-danger" style="margin-right: 10px;"><i class="fa-solid fa-xmark"></i>
+              Hủy lịch
+         </button>
+            </div>
+            <div>
+                <button *ngIf="formView == 'deposit'" (click)="edit()" class="btn btn-sm btn-warning" style="margin-right: 10px;"><i
+        class="fa fa-save"></i>
+           Sửa
+       </button>
+                <button *ngIf="formView == 'deposit'" (click)="payNow()" class="btn btn-sm btn-primary" style="margin-right: 10px; background-color: #4CACBC;border-color: #4CACBC;">
+          <i class="fa-solid fa-money-check-dollar"></i>
+         Thanh toán
+        </button>
+                <button *ngIf="formView=='formEdit'|| formView=='formAdd'" (click)="save()" class="btn btn-sm btn-primary" style="margin-right: 10px;"><i
+          class="fa fa-save"></i>
+           {{formView == 'formAdd' ? 'Tạo lịch' : 'Cập nhật'}}
+          </button>
+                <button *ngIf="formView=='formCancel'" (click)="cancel()" class="btn btn-sm btn-primary" style="margin-right: 10px;"><i class="fa-solid fa-check"></i>
+              Xác nhận hủy lịch
+          </button>
+            </div>
+        </div>
+    </ng-template>

@@ -1,0 +1,72 @@
+<div class="d-flex">
+    <div class="mr-auto p-2">
+        <span class="proile-rating fw-bold">
+          <span class="fs-4 text-uppercase">
+              {{dataItem.name}}
+              <hr>
+          </span>
+        </span>
+    </div>
+    <div class="p-2">
+        <span *ngIf="dataItem.status === '1'; else other_content " class="badge badge-success fs-4">Đang kinh doanh</span>
+        <ng-template #other_content>
+            <span class="badge badge-danger">Dừng kinh doanh</span>
+        </ng-template>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-5">
+        <div class="profile-img" style="width:100%">
+            <nz-avatar style="width: 200px; height: 200px;" nzSize="300" *ngIf="dataItem.image" nzIcon="user" nzSrc="{{dataItem.image}}"></nz-avatar>
+            <!-- <img src="../../../../assets/images/sandaiduongn.jpg" alt="cơ sở kinh doanh" /> -->
+            <!-- <div class="file btn btn-lg btn-primary" hidden>
+                        Change Photo
+                        <input type="file" name="file" />
+                    </div> -->
+        </div>
+    </div>
+    <div class="col-md-6">
+        <!-- <div class="profile-head"> -->
+        <!-- <h2 class="proile-rating fw-bold">
+                <span class="fs-3">
+                          {{dataItem.name}}
+                        </span>
+            </h2> -->
+        <h5 class="proile-rating fw-bold">MÃ CƠ SỞ :
+            <span>
+                    {{dataItem.foundationCode}}
+                    </span>
+            <hr>
+
+        </h5>
+        <h5 class="proile-rating fw-bold">ĐỊA CHỈ :
+            <span>{{dataItem.address.addressDetail ? dataItem.address.addressDetail :"N/A"}},
+               {{percentName[0].name ? percentName[0].name : ""}},
+                {{districtName[0].name ? districtName[0].name : ""}},
+                 {{provineName[0].name ? provineName[0].name : ""}}</span>
+            <hr>
+        </h5>
+        <h5 class="proile-rating fw-bold">TỔNG SỐ SÂN BÓNG :
+            <span class="text-success">
+                {{tongSoSanBong}}
+            </span>
+            <hr>
+        </h5>
+        <h5 class="proile-rating fw-bold">SỐ SÂN TRỤC TRẶC :
+            <span class="text-red">
+              {{soSanTrucTrac}}
+            </span>
+            <hr>
+        </h5>
+        <h5 class="proile-rating fw-bold">MÔ TẢ :
+            <span>
+             {{dataItem.description}}
+            </span>
+            <hr>
+        </h5>
+        <!-- </div> -->
+    </div>
+    <ng-template [nzModalFooter]>
+        <button (click)="close()" class="btn btn-sm btn-secondary"><i class="fas fa-times"></i> Đóng</button>
+    </ng-template>
+</div>

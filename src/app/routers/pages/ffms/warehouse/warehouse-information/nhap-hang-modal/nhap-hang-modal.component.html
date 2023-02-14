@@ -1,0 +1,59 @@
+<div id="modalNhapHang">
+    <div class="mb-5">
+        <label class="form-label fw-bolder">Sản phẩm</label>
+        <input class="form-control" [ngModel]="dataItem.product.productCode+'-'+dataItem.product.name" placeholder="Sản phẩm" [disabled]="true" />
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Ngày nhập hàng<span class="text-red"> (*)</span></label>
+            <date-picker [(sModel)]="dataItem.importDate" [isDisabled]="isView"></date-picker>
+            <validation-custom nameField="Ngày nhập hàng" [sModel]="dataItem.importDate"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Ngày sản xuất<span class="text-red"> (*)</span></label>
+            <date-picker [(sModel)]="dataItem.manufactureDate" [isDisabled]="isView"></date-picker>
+            <validation-custom nameField="Ngày sản xuất" [sModel]="dataItem.manufactureDate"></validation-custom>
+        </div>
+    </div>
+    <div class="row">
+        <div *ngIf="cateogryId == 1" class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Ngày hết hạn<span class="text-red"> (*)</span></label>
+            <date-picker [(sModel)]="dataItem.expriredDate" [isDisabled]="isView"></date-picker>
+            <validation-custom nameField="Ngày hết hạn" [sModel]="dataItem.expriredDate"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Giá nhập sản phẩm VNĐ<span class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.price" placeholder="Giá nhập sản phẩm" mask="separator.0" thousandSeparator="," [disabled]="isView" />
+            <!-- <label class="form-label fw-bolder">Giá nhập sản phẩm<span class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.price" placeholder="Giá nhập sản phẩm" mask="separator.0" thousandSeparator="," suffix=" đ" [disabled]="isView" /> -->
+            <validation-custom nameField="Giá lô hàng" [sModel]="dataItem.price"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Số lượng<span class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.amount" placeholder="Số lượng" mask="separator.0" thousandSeparator="," [suffix]="' '+unitName" [disabled]="isView" />
+            <validation-custom nameField="Số lượng" [sModel]="dataItem.amount"></validation-custom>
+        </div>
+        <div class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Giá lô hàng VNĐ<span class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.totalPrice" placeholder="Giá lô hàng" mask="separator.0" thousandSeparator="," [disabled]="isView" />
+            <!-- <label class="form-label fw-bolder">Giá lô hàng<span class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.totalPrice" placeholder="Giá lô hàng" mask="separator.0" thousandSeparator="," suffix=" đ" [disabled]="isView" /> -->
+            <validation-custom nameField="Giá lô hàng" [sModel]="dataItem.totalPrice"></validation-custom>
+        </div>
+        <!-- <div *ngIf="cateogryId == 2" class="col-md-6 mb-5">
+            <label class="form-label fw-bolder">Số lượng bị hỏng<span class="text-red"> (*)</span></label>
+            <input class="form-control" [(ngModel)]="dataItem.amount" placeholder="Số lượng" mask="separator.0" thousandSeparator="," [suffix]="' '+unitName" [disabled]="isView" />
+            <validation-custom nameField="Số lượng" [sModel]="dataItem.amount"></validation-custom>
+        </div> -->
+    </div>
+    <div class="mb-5">
+        <label class="form-label fw-bolder">Mô tả</label>
+        <textarea [(ngModel)]="dataItem.description" style="height: auto !important;" class="form-control" rows="3" placeholder="Mô tả" [disabled]="isView"></textarea>
+    </div>
+</div>
+
+<ng-template [nzModalFooter]>
+    <button *ngIf="!isView" (click)="save()" class="btn btn-sm btn-primary" style="margin-right: 10px;"><i class="fa fa-save"></i>
+Lưu</button>
+    <button (click)="close()" class="btn btn-sm btn-secondary"><i class="fas fa-times"></i> Đóng</button>
+</ng-template>

@@ -1,0 +1,98 @@
+<div ngProjectAs="card-body">
+    <div enterKey (enterKeyEvent)="fetchData()">
+        <nz-tabset nzType="card">
+            <nz-tab nzTitle="Tìm kiếm nâng cao">
+                <div class="row">
+                    <div class="mb-4 col-md-3">
+                        <label class="form-label fw-bolder" style="font-size: 15px;">Tên khách hàng</label>
+                        <!-- <input [(ngModel)]="this.objFilter.customerName" type="text" class="form-control" placeholder="Nhập tên khách hàng"> -->
+                        <input [(ngModel)]="this.objFilter.customerName" type="text" class="form-control" placeholder="Nhập tên khách hàng">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label class="form-label fw-bolder">Tên sân bóng</label>
+                        <input [(ngModel)]="this.objFilter.footballName" type="text" class="form-control" placeholder="Nhập tên sân bóng">
+                        <!-- <app-combobox [(sModel)]="this.objFilter.footballFieldId" [datas]="lstFootball"></app-combobox> -->
+
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label class="form-label fw-bolder">Ca đá</label>
+                        <app-combobox [(sModel)]="this.objFilter.slot" [datas]="lstSlot"></app-combobox>
+                    </div>
+                    <!-- <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Thời gian giao dịch</label>
+                        <range-picker [(sModelStart)]="objFilter.fromDate" [(sModelEnd)]="objFilter.toDate"></range-picker>
+                    </div> -->
+                    <div class="col-md-3 mb-4">
+                        <label for="search" class="form-label fw-bolder">Ngày đặt sân</label>
+                        <!-- <date-picker [(sModel)]="this.objFilter.fromDatePicker" (onDateChange)="objFilter.toDatePicker = $event" placeholder=" dd-mm-yyyy"></date-picker> -->
+                        <range-picker [(sModelStart)]="objFilter.fromDatePicker" [(sModelEnd)]="objFilter.toDatePicker"></range-picker>
+                    </div>
+                    <div class="col-md-3 mb-4">
+                        <label for="search" class="form-label fw-bolder">Ngày huỷ lịch</label>
+                        <!-- <date-picker [(sModel)]="this.objFilter.fromDatePicker" (onDateChange)="objFilter.toDatePicker = $event" placeholder=" dd-mm-yyyy"></date-picker> -->
+                        <range-picker [(sModelStart)]="objFilter.fromCancelDate" [(sModelEnd)]="objFilter.toCancelDate"></range-picker>
+                    </div>
+                    <!-- <div class="mb-4 col-md-3">
+                        <label class="form-label fw-bolder">Tình trạng đặt sân</label>
+                        <app-combobox [(sModel)]="this.objFilter.status" [datas]="lstStatus"></app-combobox>
+                    </div> -->
+                    <!-- <div class="mb-4 col-md-3">
+                        <label class="form-label fw-bolder" style="font-size: 15px;">Địa chỉ</label>
+                        <input [(ngModel)]="this.objFilter.address" type="text" class="form-control" placeholder="Nhập địa chỉ">
+                    </div> -->
+
+                    <div class="mb-4 col-md-3 mt-8">
+                        <button (click)="fetchData()" class="btn btn-sm btn-primary me-1">
+                <i class="fas fa-search"></i> Tìm kiếm
+              </button>
+                        <button (click)="initFilter()" class="btn btn-sm btn-secondary ms-1">
+                <i class="fas fa-sync"></i> Đặt lại
+              </button>
+                    </div>
+                </div>
+            </nz-tab>
+            <nz-tab nzTitle="Tìm kiếm nhanh">
+                <div class="mb-4">
+                    <input id="search" [(ngModel)]="objFilter.textSearch" (ngModelChange)="searchHandle()" placeholder="Nhập tên khách hàng, số điện thoại để tìm kiếm..." autoFocus class="form-control" type="text" />
+                </div>
+            </nz-tab>
+        </nz-tabset>
+    </div>
+    <nz-tabset nzType="card" [(nzSelectedIndex)]="currentTab" (nzSelectChange)="tabChangeHandle()">
+        <nz-tab [nzTitle]="titleTemplate1">
+            <ng-template #titleTemplate1>
+                <nz-badge style="margin-right: 8px;" [nzCount]="countDaCoc ? countDaCoc : 0" nzShowZero [nzStyle]="{ backgroundColor: '#FEDB39' }">
+                    <span style="padding-right: 15px;">Đã cọc sân</span>
+                </nz-badge>
+            </ng-template>
+            <ng-container *ngIf="objFilter.status == HISTORY_BOOKING_STATUS.DA_COC_SAN">
+                <div class="table-responsive">
+                    <booking-history-table [listData]="lstHistoryBooking" [total]="objFilter.total" (onChange)="onChangeQuery($event)" (view)="view($event,true)" [loading]="loading"></booking-history-table>
+                </div>
+            </ng-container>
+        </nz-tab>
+        <nz-tab [nzTitle]="titleTemplate2">
+            <ng-template #titleTemplate2>
+                <nz-badge style="margin-right: 8px;" [nzCount]="countDaThanhToan ? countDaThanhToan : 0" nzShowZero [nzStyle]="{ backgroundColor: '#52c41a' }">
+                    <span style="padding-right: 17px;">Đã thanh toán</span>
+                </nz-badge>
+            </ng-template>
+            <ng-container *ngIf="objFilter.status == HISTORY_BOOKING_STATUS.DA_THANH_TOAN">
+                <booking-history-table [listData]="lstHistoryBooking" [total]="objFilter.total" (onChange)="onChangeQuery($event)" (view)="view($event,true)" [loading]="loading"></booking-history-table>
+            </ng-container>
+        </nz-tab>
+        <nz-tab [nzTitle]="titleTemplate">
+            <ng-template #titleTemplate>
+                <nz-badge style="margin-right: 8px;" [nzCount]="countDaHuy ? countDaHuy : 0" nzShowZero>
+                    <span style="padding-right: 15px;">Đã huỷ sân</span>
+                </nz-badge>
+            </ng-template>
+            <ng-container *ngIf="objFilter.status == HISTORY_BOOKING_STATUS.DA_HUY_SAN">
+                <div class="table-responsive">
+                    <booking-history-table [listData]="lstHistoryBooking" [total]="objFilter.total" (onChange)="onChangeQuery($event)" (view)="view($event,true)" [loading]="loading"></booking-history-table>
+                </div>
+            </ng-container>
+        </nz-tab>
+    </nz-tabset>
+
+</div>

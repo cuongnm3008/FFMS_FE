@@ -1,0 +1,49 @@
+<div ngProjectAs="card-body">
+    <div enterKey (enterKeyEvent)="fetchData()">
+        <nz-tabset nzType="card">
+            <nz-tab nzTitle="Tìm kiếm nâng cao">
+                <div class="row">
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Mã nhập hàng</label>
+                        <input type="text" class="form-control" placeholder="Mã nhập hàng" [(ngModel)]="_objFilter.importCouponCode">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Tên sản phẩm</label>
+                        <input type="text" class="form-control" placeholder="Nhập tên sản phẩm" [(ngModel)]="_objFilter.productName">
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Nhà cung cấp</label>
+                        <!-- <app-combobox [datas]="listSupplilers" [(sModel)]="_objFilter.supplierId"></app-combobox> -->
+                        <input type="text" class="form-control" placeholder="Nhập tên nhà cung cấp" [(ngModel)]="_objFilter.supplierName">
+                        <!-- <app-combobox [datas]="this.listSupplilers" [(sModel)]="_objFilter.supplierId"></app-combobox> -->
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Ngày đổi hàng</label>
+                        <date-picker [(sModel)]="_objFilter.importDate" (onDateChange)="_objFilter.importDate = $event"></date-picker>
+                    </div>
+                    <div class="mb-4 col-md-3">
+                        <label for="search" class="form-label fw-bolder">Tình trạng đổi trả</label>
+                        <app-combobox [datas]="this.listStatus" [(sModel)]="_objFilter.status"></app-combobox>
+                    </div>
+                    <div class="mb-4 col-md-3 mt-7">
+                        <button (click)="fetchData()" class="btn btn-sm btn-primary me-1">
+                    <i class="fas fa-search"></i> Tìm kiếm
+                  </button>
+                        <button (click)="initFilter()" class="btn btn-sm btn-secondary ms-1">
+                    <i class="fas fa-sync"></i> Đặt lại
+                  </button>
+                    </div>
+                </div>
+            </nz-tab>
+            <nz-tab nzTitle="Tìm kiếm nhanh">
+                <div class="mb-4">
+                    <input id="search" [(ngModel)]="_objFilter.textSearch" (ngModelChange)="searchHandle()" placeholder="Nhập tên nhà cung cấp, tên sản phẩm để tìm kiếm..." autoFocus class="form-control" type="text" />
+                </div>
+            </nz-tab>
+        </nz-tabset>
+    </div>
+    <div class="table-responsive">
+        <refund-history-table [total]="this._objFilter.total" [loading]="loading" (onChange)="onChangeQuery($event)" (view)="addOrEditModal($event,true)" [listData]="listDataTransaction" (onChange)="onChangeQuery($event)">
+        </refund-history-table>
+
+    </div>
